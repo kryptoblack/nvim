@@ -78,7 +78,17 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  { 'numToStr/Comment.nvim', opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        line = '<C-_>',
+      },
+      opleader = {
+        line = '<C-_>',
+      },
+    },
+  },
   { -- Colorscheme
     'rose-pine/neovim',
     name = 'rose-pine',
@@ -128,6 +138,11 @@ require('lazy').setup {
     },
     config = function()
       require('telescope').setup {
+        defaults = {
+          file_ignore_patterns = {
+            '.git',
+          },
+        },
         pickers = {
           find_files = {
             hidden = true,
@@ -163,7 +178,6 @@ require('lazy').setup {
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      local extensions = require('telescope').extensions
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -352,7 +366,6 @@ require('lazy').setup {
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
       { 'j-hui/fidget.nvim', opts = {} },
       { 'folke/neodev.nvim', opts = {} },
     },
@@ -401,6 +414,15 @@ require('lazy').setup {
       end
 
       local servers = {
+        vacuum = {
+          filetypes = { 'yaml', 'json' },
+          on_attach = function(client, bufnr)
+            local file_name = vim.api.nvim_buf_get_name(bufnr)
+            if not file_name:match 'openapi%.yaml' and not file_name:match 'openapi%.json' then
+              client.stop() -- Stop Vacuum if it's not an OpenAPI file
+            end
+          end,
+        },
         lua_ls = {
           settings = {
             Lua = {
@@ -416,9 +438,9 @@ require('lazy').setup {
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {})
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
+        automatic_installation = true,
+        ensure_installed = ensure_installed,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -429,9 +451,18 @@ require('lazy').setup {
       }
     end,
   },
+  { -- Swagger Preview
+    'vinnymeller/swagger-preview.nvim',
+    cmd = { 'SwaggerPreview', 'SwaggerPreviewStop', 'SwaggerPreviewToggle' },
+    build = 'npm i',
+    config = true,
+    dependencies = {
+      'moon0326/swagger-ui-watcher',
+    },
+  },
   { -- Autoformat
     'stevearc/conform.nvim',
-    lazy = false,
+    lazy = true,
     keys = {
       {
         '<leader>f',
@@ -448,19 +479,22 @@ require('lazy').setup {
       format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 2500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'isort', 'black' },
-        javascript = { { 'prettierd', 'prettier', 'tsserver' } },
-        typescript = { { 'prettierd', 'prettier', 'tsserver' } },
+        javascript = { 'prettierd', 'prettier', 'tsserver' },
+        typescript = { 'prettierd', 'prettier', 'tsserver' },
         terraform = { 'terraformls' },
         yaml = { 'yamlfmt' },
         yml = { 'yamlfmt' },
         go = { 'gofumpt' },
+        groovy = { 'npm-groovy-lint' },
+        Jenkinsfile = { 'npm-groovy-lint' },
+        json = { 'prettierd' },
       },
     },
   },
