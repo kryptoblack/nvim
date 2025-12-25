@@ -1,5 +1,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.clipboard = 'unnamedplus'
@@ -16,10 +17,17 @@ vim.opt.showmode = false
 vim.opt.swapfile = false
 vim.opt.mouse = ''
 vim.opt.scroll = 8
+vim.opt.updatetime = 2000
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Set toggle for wrap
+vim.keymap.set('n', '<leader>z', function()
+  vim.opt.wrap = not vim.o.wrap
+  print('Wrap is now ' .. (vim.o.wrap and 'on' or 'off'))
+end)
 
 -- Remap <Esc> to C-[
 vim.keymap.set('i', 'C-[', '<Esc>')
@@ -32,8 +40,12 @@ vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump { count = -1 }
+end, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump { count = 1 }
+end, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -45,6 +57,9 @@ vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix item
 vim.keymap.set('n', '<leader>d', '"_d', { desc = 'Delete into blackhole register' })
 vim.keymap.set('v', '<leader>d', '"_d', { desc = 'Delete into blackhole register' })
 vim.keymap.set('v', '<leader>p', '"_dP', { desc = 'Delete into blackhole register then put' })
+
+-- Delete old signature_help
+vim.keymap.del('i', '<C-S>')
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -80,12 +95,24 @@ require('lazy').setup {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   {
     'numToStr/Comment.nvim',
+    branch = 'jsx',
     opts = {
       toggler = {
         line = '<C-_>',
       },
       opleader = {
         line = '<C-_>',
+      },
+    },
+  },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua', -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
   },
@@ -114,6 +141,10 @@ require('lazy').setup {
         'nvim-tree/nvim-web-devicons',
         opts = {
           override_by_extension = {
+            ['tofu'] = {
+              icon = '🧈',
+              name = 'OpenTofu',
+            },
             ['adoc'] = {
               icon = '',
               color = '#e40046',
@@ -140,7 +171,7 @@ require('lazy').setup {
       require('telescope').setup {
         defaults = {
           file_ignore_patterns = {
-            '.git',
+            '.git/',
           },
         },
         pickers = {
@@ -169,6 +200,11 @@ require('lazy').setup {
         extension = {
           templ = 'templ',
           prisma = 'prisma',
+          tofu = 'terraform',
+        },
+        pattern = {
+          ['openapi.*%.ya?ml'] = 'yaml.openapi',
+          ['openapi.*%.json'] = 'json.openapi',
         },
       }
 
@@ -367,7 +403,6 @@ require('lazy').setup {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       { 'j-hui/fidget.nvim', opts = {} },
-      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -386,6 +421,7 @@ require('lazy').setup {
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
+          map('<leader>k', vim.lsp.buf.signature_help, 'Signature Help')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -423,6 +459,21 @@ require('lazy').setup {
             end
           end,
         },
+        biome = {
+          cmd = { 'biome', 'lsp-proxy' },
+          configurationPath = { 'biome.json', 'biome.jsonc' },
+          filetypes = {
+            'css',
+            'html',
+            'javascript',
+            'javascriptreact',
+            'json',
+            'jsonc',
+            'svelte',
+            'typescript',
+            'typescriptreact',
+          },
+        },
         lua_ls = {
           settings = {
             Lua = {
@@ -435,11 +486,11 @@ require('lazy').setup {
       }
 
       require('mason').setup()
-
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {})
       require('mason-lspconfig').setup {
         automatic_installation = true,
+        automatic_enable = true,
         ensure_installed = ensure_installed,
         handlers = {
           function(server_name)
@@ -486,15 +537,17 @@ require('lazy').setup {
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'isort', 'black' },
-        javascript = { 'prettierd', 'prettier', 'tsserver' },
-        typescript = { 'prettierd', 'prettier', 'tsserver' },
+        javascript = { 'biome', 'prettierd', 'prettier', 'tsserver' },
+        typescript = { 'biome', 'prettierd', 'prettier', 'tsserver' },
         terraform = { 'terraformls' },
         yaml = { 'yamlfmt' },
         yml = { 'yamlfmt' },
         go = { 'gofumpt' },
         groovy = { 'npm-groovy-lint' },
         Jenkinsfile = { 'npm-groovy-lint' },
-        json = { 'prettierd' },
+        json = { 'biome', 'prettierd' },
+        dart = { 'dart' },
+        kotlin = { 'ktfmt' },
       },
     },
   },
@@ -619,6 +672,16 @@ require('lazy').setup {
   },
   {
     'kevinhwang91/nvim-hlslens',
+    opts = {},
+  },
+  {
+    'nvim-flutter/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim',
+    },
+    config = true,
     opts = {},
   },
 }
