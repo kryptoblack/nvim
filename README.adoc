@@ -1,8 +1,0 @@
-= Neovim Configuration
-
-== Dependencies
-
-1. https://github.com/BurntSushi/ripgrep[ripgrep]
-2. https://www.nerdfonts.com[Nerd Fonts]
-3. https://https://github.com/sharkdp/fd[fd]
-4. https://github.com/tree-sitter/tree-sitter[tree-sitter-cli] because of the following message `WARNING tree-sitter executable not found (parser generator, only needed for :TSInstallFromGrammar, not required for :TSInstall)`
