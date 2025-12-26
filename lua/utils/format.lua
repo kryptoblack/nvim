@@ -11,7 +11,7 @@ function M.format(bufnr)
 			end
 
 			-- fallback to LSP only if null-ls formatter is not attached
-			for _, c in ipairs(vim.lsp.get_active_clients({bufnr = bufnr})) do
+			for _, c in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
 				if c.name == "null-ls" then
 					return false
 				end

@@ -1,11 +1,14 @@
 local comment = require("Comment")
-local ts_context = require("ts_context_commentstring.integrations.custom_nvim")
+
+require('ts_context_commentstring').setup({
+	enable_autocmd = false,
+})
 
 comment.setup({
 	padding = true,
 	sticky = true,
 
-	pre_hook = ts_context.create_pre_hook(),
+	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
 
 	toggler = {
 		line = "gcc",

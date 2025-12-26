@@ -24,3 +24,21 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		format.format()
 	end
 })
+
+-- Multi cursor
+vim.api.nvim_create_autocmd("User", {
+	pattern = "visual_multi_exit",
+	callback = function()
+		vim.cmd("stopinsert")
+	end,
+})
+
+-- Automatic directory creation on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+	callback = function()
+		local dir = vim.fn.fnamemodify(vim.fn.expand("<afile>"), ":p:h")
+		if vim.fn.isdirectory(dir) == 0 then
+			vim.fn.mkdir(dir, "p")
+		end
+	end,
+})

@@ -1,8 +1,14 @@
 local cmp = require("cmp")
 
 cmp.setup({
+	snippet = {
+		expand = function(args)
+			require("luasnip").lsp_expand(args.body)
+		end
+	},
+
 	completion = {
-		completeopt = "menu,menuone,noinsert",
+		completeopt = "menu,menuone",
 	},
 
 	mapping = cmp.mapping.preset.insert({
@@ -10,12 +16,13 @@ cmp.setup({
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
-		["<Esc>"] = cmp.mapping.abort(),
 	}),
 
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
 		{ name = "path" },
 		{ name = "buffer" },
+		{ name = "luasnip" },
+		{ name = "lorem_ipsum" },
 	})
 })

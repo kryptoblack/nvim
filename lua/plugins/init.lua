@@ -29,6 +29,7 @@ require("lazy").setup({
 
 	-- Treesitter
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+	"nvim-treesitter/nvim-treesitter-textobjects",
 
 	-- Mason (LSP Package Manager)
 	"williamboman/mason.nvim",
@@ -45,6 +46,14 @@ require("lazy").setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
+			"dnnr1/lorem-ipsum.nvim",
+		},
+	},
+	{
+		"L3MON4D3/LuaSnip",
+		dependencies = {
+			"saadparwaiz1/cmp_luasnip",
+			"rafamadriz/friendly-snippets",
 		},
 	},
 
@@ -71,4 +80,28 @@ require("lazy").setup({
 	-- Comments
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+
+	-- Surround
+	"kylechui/nvim-surround",
+
+	-- Multiple cursors
+	"mg979/vim-visual-multi",
+
+	-- Picker
+	"folke/snacks.nvim",
+
+	-- Git
+	"lewis6991/gitsigns.nvim",
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+
+	-- Undotree
+	"mbbill/undotree",
+
 }, opts)

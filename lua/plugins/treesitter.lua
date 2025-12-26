@@ -30,4 +30,54 @@ require('nvim-treesitter.configs').setup({
 			node_decremental = "grm",
 		}
 	},
+
+	textobjects = {
+		-- Selection
+		select = {
+			enable = true,
+			lookahead = true, -- automatically jump forward
+
+			keymaps = {
+				-- functions
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+
+				-- classes / types
+				["ac"] = "@class.outer",
+				["ic"] = "@class.inner",
+
+				-- blocks / scopes
+				["ab"] = "@block.outer",
+				["ib"] = "@block.inner",
+
+				-- parameters
+				["ap"] = "@parameter.outer",
+				["ip"] = "@parameter.inner",
+			},
+
+			-- how selections behave
+			selection_modes = {
+				["@parameter.outer"] = "v",     -- charwise
+				["@function.outer"]  = "V",     -- linewise
+				["@class.outer"]     = "<c-v>", -- blockwise
+			},
+
+			include_surrounding_whitespace = true,
+		},
+
+		-- Movement
+		move = {
+			enable = true,
+			set_jumps = true,
+
+			goto_next_start = {
+				["]f"] = "@function.outer",
+				["]c"] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[f"] = "@function.outer",
+				["[c"] = "@class.outer",
+			},
+		},
+	},
 })
