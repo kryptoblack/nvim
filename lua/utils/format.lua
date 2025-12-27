@@ -1,25 +1,32 @@
 local M = {}
 
+--- Format by prioritzing null-ls over lsp based formatting
+---
+--- @param bufnr? integer
 function M.format(bufnr)
-	bufnr = bufnr or vim.api.nvim_get_current_buf()
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
 
-	vim.lsp.buf.format({
-		bufnr = bufnr,
-		filter = function(client)
-			if client.name == "null-ls" then
-				return true
-			end
+  vim.lsp.buf.format({
+    bufnr = bufnr,
+    filter = function(client)
+      if not client:supports_method('textDocument/formatting', bufnr) then
+        return false
+      end
 
-			-- fallback to LSP only if null-ls formatter is not attached
-			for _, c in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
-				if c.name == "null-ls" then
-					return false
-				end
-			end
+      if client.name == 'null-ls' then
+        return true
+      end
 
-			return true
-		end,
-	})
+      for _, c in pairs(clients) do
+        if c.name == 'null-ls' then
+          return false
+        end
+      end
+
+      return true
+    end,
+  })
 end
 
 return M

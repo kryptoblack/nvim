@@ -1,6 +1,6 @@
-local lualine = require("lualine")
+local lualine = require('lualine')
 
 lualine.setup({
-	theme = "rose-pine",
-	globalstatus = true,
+  theme = 'rose-pine',
+  globalstatus = true,
 })

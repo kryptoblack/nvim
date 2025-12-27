@@ -1,10 +1,10 @@
-require("mason").setup()
+require('mason').setup()
 
-require("mason-lspconfig").setup({
-	ensure_installed = {
-		"lua_ls",
-		"gopls",
-		"pyright",
-		"ts_ls",
-	},
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    'lua_ls',
+    'gopls',
+    'pyright',
+    'ts_ls',
+  },
 })
