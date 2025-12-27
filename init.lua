@@ -20,7 +20,6 @@ require('plugins.todo')
 require('plugins.git-signs')
 require('plugins.git-diffview')
 require('plugins.harpoon')
--- require('plugins.cmdline')
 
 -- Core configuration
 require('config.options')

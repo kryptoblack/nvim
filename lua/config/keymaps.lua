@@ -1,97 +1,143 @@
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "Clear search highlight" })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
 vim.keymap.set('n', '<leader>z', function()
   vim.opt.wrap = not vim.o.wrap
   print('Wrap is now ' .. (vim.o.wrap and 'on' or 'off'))
-end, { desc = "Toggle wrap" })
+end, { desc = 'Toggle wrap' })
 
 -- Change/Cut/Delete
-vim.keymap.set({ "n", "v" }, "d", '"_d', { noremap = true })
-vim.keymap.set({ "n", "v" }, "x", '"_x', { noremap = true })
-vim.keymap.set({ "n", "v" }, "c", '"_c', { noremap = true })
-vim.keymap.set("n", "D", '"_D', { noremap = true })
-vim.keymap.set("n", "C", '"_C', { noremap = true })
-vim.keymap.set({ "n", "v" }, "<leader>d", '"+d', { desc = "Cut to system clipboard" })
+vim.keymap.set({ 'n', 'v' }, 'd', '"_d', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'x', '"_x', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'c', '"_c', { noremap = true })
+vim.keymap.set('n', 'D', '"_D', { noremap = true })
+vim.keymap.set('n', 'C', '"_C', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>d', '"+d', { desc = 'Cut to system clipboard' })
 
 -- Search direction
-vim.keymap.set("n", "N", "'nN'[v:searchforward]", { expr = true, desc = "Move up regardless of forward/backward search"})
-vim.keymap.set("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Move down regardless of forward/backward search"})
+vim.keymap.set(
+  'n',
+  'N',
+  "'nN'[v:searchforward]",
+  { expr = true, desc = 'Move up regardless of forward/backward search' }
+)
+vim.keymap.set(
+  'n',
+  'n',
+  "'Nn'[v:searchforward]",
+  { expr = true, desc = 'Move down regardless of forward/backward search' }
+)
 
 -- Diagnostics
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
-vim.keymap.set("n", "[d", function () vim.diagnostic.goto(-1) end)
-vim.keymap.set("n", "]d", function () vim.diagnostic.goto(1) end)
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open diagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.goto_diagnostic(-1)
+end, { desc = 'Go to previous diagnostic' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.goto_diagnostic(1)
+end, { desc = 'Go to next diagnostic' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
 -- Formatting
-local format = require("utils.format")
-vim.keymap.set("n", "<leader>f", function()
-	format.format()
-end, { desc = "Format buffer" })
+local format = require('utils.format')
+vim.keymap.set('n', '<leader>f', function()
+  format.format()
+end, { desc = 'Format buffer' })
 
 -- File explorer
-vim.keymap.set("n", "<leader>t", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file tree" })
-vim.keymap.set("n", "<leader>o", "<cmd>NvimTreeFocus<CR>", { desc = "Focus file tree" })
+vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
+vim.keymap.set('n', '<leader>o', '<cmd>NvimTreeFocus<CR>', { desc = 'Focus file tree' })
 
 -- Luasnip
-local ls = require("luasnip")
-vim.keymap.set({ "i", "s" }, "<C-j>", function()
-	if ls.jumpable(1) then
-		ls.jump(1)
-	end
-end, { silent = true, desc = "LuaSnip jump forward" })
-vim.keymap.set({ "i", "s" }, "<C-k>", function()
-	if ls.jumpable(-1) then
-		ls.jump(-1)
-	end
-end, { silent = true, desc = "LuaSnip jump backward" })
+local ls = require('luasnip')
+vim.keymap.set({ 'i', 's' }, '<C-j>', function()
+  if ls.jumpable(1) then
+    ls.jump(1)
+  end
+end, { silent = true, desc = 'LuaSnip jump forward' })
+vim.keymap.set({ 'i', 's' }, '<C-k>', function()
+  if ls.jumpable(-1) then
+    ls.jump(-1)
+  end
+end, { silent = true, desc = 'LuaSnip jump backward' })
 
 -- Folding
 for i = 1, 5 do
-	vim.keymap.set("n", "z" .. i, function()
-		vim.opt.foldlevel = i
-	end, { desc = "Fold level " .. i })
+  vim.keymap.set('n', 'z' .. i, function()
+    vim.opt.foldlevel = i
+  end, { desc = 'Fold level ' .. i })
 end
 
 -- Buffer
-vim.keymap.set("n", "<leader>bd", "<cmd>bd<CR>", { desc = "Delete current buffer" })
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
 
 ---@type Snacks
-local snacks = require("snacks")
-vim.keymap.set("n", "<leader>ff", function () snacks.picker.files({hidden = true }) end, { desc = "Find files" })
-vim.keymap.set("n", "<leader>fr", snacks.picker.recent, { desc = "Recent files" })
-vim.keymap.set("n", "<leader>fg", snacks.picker.grep, { desc = "Live grep" })
-vim.keymap.set("n", "<leader>fs", snacks.picker.lsp_symbols, { desc = "LSP symbols" })
-vim.keymap.set("n", "<leader>fd", function() snacks.picker.diagnostics({ bufnr = 0 }) end, { desc = "Diagnostics (buffer)" })
-vim.keymap.set("n", "<leader>fD", snacks.picker.diagnostics, { desc = "Diagnostics (workspace)" })
-vim.keymap.set("n", "<leader>fb", snacks.picker.buffers, { desc = "Buffers" })
+local snacks = require('snacks')
+vim.keymap.set('n', '<leader>ff', function()
+  snacks.picker.files({ hidden = true })
+end, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fr', snacks.picker.recent, { desc = 'Recent files' })
+vim.keymap.set('n', '<leader>fg', snacks.picker.grep, { desc = 'Live grep' })
+vim.keymap.set('n', '<leader>fs', snacks.picker.lsp_symbols, { desc = 'LSP symbols' })
+vim.keymap.set('n', '<leader>fd', function()
+  snacks.picker.diagnostics({ bufnr = 0 })
+end, { desc = 'Diagnostics (buffer)' })
+vim.keymap.set('n', '<leader>fD', snacks.picker.diagnostics, { desc = 'Diagnostics (workspace)' })
+vim.keymap.set('n', '<leader>fb', snacks.picker.buffers, { desc = 'Buffers' })
 ---@diagnostic disable-next-line: undefined-field
-vim.keymap.set("n", "<leader>ft", function() snacks.picker.todo_comments() end, { desc = "TODO picker" })
+vim.keymap.set('n', '<leader>ft', function()
+  snacks.picker.todo_comments()
+end, { desc = 'TODO picker' })
 
-local gs = require("gitsigns")
+local gs = require('gitsigns')
 ---@diagnostic disable-next-line: param-type-mismatch
-vim.keymap.set("n", "]gh", function () gs.nav_hunk('next') end, { desc = "Next git hunk" })
+vim.keymap.set('n', ']gh', function()
+  gs.nav_hunk('next')
+end, { desc = 'Next git hunk' })
 ---@diagnostic disable-next-line: param-type-mismatch
-vim.keymap.set("n", "[gh", function () gs.nav_hunk('prev') end, { desc = "Previous git hunk" })
-vim.keymap.set("n", "<leader>ghs", gs.stage_hunk, { desc = "Stage hunk" })
-vim.keymap.set("n", "<leader>ghr", gs.reset_hunk, { desc = "Reset hunk" })
-vim.keymap.set("n", "<leader>gB", gs.blame, { desc = "Preview blame" })
-vim.keymap.set("n", "<leader>gb", gs.blame_line, { desc = "Preview blame line" })
-vim.keymap.set("n", "<leader>gs", gs.stage_buffer, { desc = "Stage entire buffer" })
+vim.keymap.set('n', '[gh', function()
+  gs.nav_hunk('prev')
+end, { desc = 'Previous git hunk' })
+vim.keymap.set('n', '<leader>ghs', gs.stage_hunk, { desc = 'Stage hunk' })
+vim.keymap.set('n', '<leader>ghr', gs.reset_hunk, { desc = 'Reset hunk' })
+vim.keymap.set('n', '<leader>gB', gs.blame, { desc = 'Preview blame' })
+vim.keymap.set('n', '<leader>gb', gs.blame_line, { desc = 'Preview blame line' })
+vim.keymap.set('n', '<leader>gs', gs.stage_buffer, { desc = 'Stage entire buffer' })
 
 -- Diffview
-vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Diffview: open" })
-vim.keymap.set("n", "<leader>gD", "<cmd>DiffviewClose<CR>", { desc = "Diffview: close" })
-vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { desc = "Diffview: current file history" })
-vim.keymap.set("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>", { desc = "Diffview: file history" })
+vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { desc = 'Diffview: open' })
+vim.keymap.set('n', '<leader>gD', '<cmd>DiffviewClose<CR>', { desc = 'Diffview: close' })
+vim.keymap.set(
+  'n',
+  '<leader>gh',
+  '<cmd>DiffviewFileHistory %<CR>',
+  { desc = 'Diffview: current file history' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>gH',
+  '<cmd>DiffviewFileHistory<CR>',
+  { desc = 'Diffview: file history' }
+)
 
 -- Undotree
-vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Undo tree" })
+vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<CR>', { desc = 'Undo tree' })
 
 ---@type Harpoon
-local harpoon = require("harpoon")
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, { desc = "List all harpoon marks" })
-vim.keymap.set('n', '<M-e>', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Toggle quick menu" })
-vim.keymap.set('n', '<M-a>', function() harpoon:list():select(1) end, { desc = "Go to mark (a)" })
-vim.keymap.set('n', '<M-s>', function() harpoon:list():select(2) end, { desc = "Go to mark (b)" })
-vim.keymap.set('n', '<M-d>', function() harpoon:list():select(3) end, { desc = "Go to mark (c)" })
-vim.keymap.set('n', '<M-f>', function() harpoon:list():select(4) end, { desc = "Go to mark (d)" })
+local harpoon = require('harpoon')
+vim.keymap.set('n', '<leader>a', function()
+  harpoon:list():add()
+end, { desc = 'List all harpoon marks' })
+vim.keymap.set('n', '<M-e>', function()
+  harpoon.ui:toggle_quick_menu(harpoon:list())
+end, { desc = 'Toggle quick menu' })
+vim.keymap.set('n', '<M-a>', function()
+  harpoon:list():select(1)
+end, { desc = 'Go to mark (a)' })
+vim.keymap.set('n', '<M-s>', function()
+  harpoon:list():select(2)
+end, { desc = 'Go to mark (b)' })
+vim.keymap.set('n', '<M-d>', function()
+  harpoon:list():select(3)
+end, { desc = 'Go to mark (c)' })
+vim.keymap.set('n', '<M-f>', function()
+  harpoon:list():select(4)
+end, { desc = 'Go to mark (d)' })
