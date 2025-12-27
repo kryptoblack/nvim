@@ -28,9 +28,14 @@ require('lazy').setup({
   'neovim/nvim-lspconfig',
 
   -- Treesitter
-  { 'nvim-treesitter/nvim-treesitter', lazy = false },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    build = ':TSUpdate',
+  },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'main',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
     },
@@ -115,4 +120,13 @@ require('lazy').setup({
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
+
+  -- Notify & LSP progress
+  { 'j-hui/fidget.nvim', dependencies = { 'nvim-lspconfig' } },
+
+  -- Smear cursor
+  'sphamba/smear-cursor.nvim',
+
+  -- wakatime
+  { 'wakatime/vim-wakatime', lazy = false },
 }, opts)

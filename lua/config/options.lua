@@ -33,7 +33,7 @@ vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath('state') .. '/undo'
 
 -- Cursor context
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.cursorcolumn = false
 
 -- Line numbers

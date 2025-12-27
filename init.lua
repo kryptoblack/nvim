@@ -20,6 +20,8 @@ require('plugins.todo')
 require('plugins.git-signs')
 require('plugins.git-diffview')
 require('plugins.harpoon')
+require('plugins.notify')
+require('plugins.smear-cursor')
 
 -- Core configuration
 require('config.options')

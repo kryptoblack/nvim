@@ -1,4 +1,4 @@
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter').setup({
   ensure_installed = {
     'go',
     'lua',
@@ -14,6 +14,7 @@ require('nvim-treesitter.configs').setup({
   modules = {},
   ignore_install = {},
   auto_install = true,
+  install_dir = vim.fn.stdpath('data') .. '/site',
 
   highlight = {
     enable = true,
@@ -34,6 +35,7 @@ require('nvim-treesitter.configs').setup({
     },
   },
 
+  -- Textobjects
   textobjects = {
     -- Selection
     select = {
