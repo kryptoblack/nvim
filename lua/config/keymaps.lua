@@ -82,19 +82,16 @@ vim.keymap.set('n', '<leader>fd', function()
 end, { desc = 'Diagnostics (buffer)' })
 vim.keymap.set('n', '<leader>fD', snacks.picker.diagnostics, { desc = 'Diagnostics (workspace)' })
 vim.keymap.set('n', '<leader>fb', snacks.picker.buffers, { desc = 'Buffers' })
----@diagnostic disable-next-line: undefined-field
 vim.keymap.set('n', '<leader>ft', function()
-  snacks.picker.todo_comments()
+  snacks.picker.todo_comments() ---@diagnostic disable-line: undefined-field
 end, { desc = 'TODO picker' })
 
 local gs = require('gitsigns')
----@diagnostic disable-next-line: param-type-mismatch
 vim.keymap.set('n', ']gh', function()
-  gs.nav_hunk('next')
+  gs.nav_hunk('next') ---@diagnostic disable-line: param-type-mismatch
 end, { desc = 'Next git hunk' })
----@diagnostic disable-next-line: param-type-mismatch
 vim.keymap.set('n', '[gh', function()
-  gs.nav_hunk('prev')
+  gs.nav_hunk('prev') ---@diagnostic disable-line: param-type-mismatch
 end, { desc = 'Previous git hunk' })
 vim.keymap.set('n', '<leader>ghs', gs.stage_hunk, { desc = 'Stage hunk' })
 vim.keymap.set('n', '<leader>ghr', gs.reset_hunk, { desc = 'Reset hunk' })
