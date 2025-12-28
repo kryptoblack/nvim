@@ -11,6 +11,13 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.breakindent = true
+vim.opt.cmdheight = 0
+vim.opt.hidden = true
+vim.opt.confirm = false
+
+-- Timeout
+vim.opt.timeout = true
+vim.opt.timeoutlen = 300
 
 -- Mouse
 vim.opt.mouse = ''
@@ -74,5 +81,8 @@ vim.opt.foldlevel = 99 -- keep everything open
 vim.opt.foldlevelstart = 99 -- no folds on file open
 vim.opt.foldcolumn = '0' -- no extra gutter noise
 
--- fine-cmdline.nvim
-vim.opt.cmdheight = 0
+-- Tabs
+vim.opt.showtabline = 2
+vim.opt.switchbuf = 'useopen'
+vim.opt.splitright = true
+vim.opt.splitbelow = true

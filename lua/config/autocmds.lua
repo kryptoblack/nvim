@@ -51,10 +51,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Highlight
--- vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
---   callback = vim.lsp.buf.document_highlight,
--- })
--- vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
---   callback = vim.lsp.buf.clear_references,
--- })
+-- Tabs
+local function project_name()
+  local cwd = vim.fn.getcwd()
+  return vim.fn.fnamemodify(cwd, ':t')
+end
+
+vim.api.nvim_create_autocmd('TabNewEntered', {
+  callback = function()
+    if not vim.t.tabname then
+      vim.t.tabname = project_name()
+    end
+  end,
+})

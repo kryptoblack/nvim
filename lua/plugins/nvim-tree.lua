@@ -1,7 +1,7 @@
 require('nvim-tree').setup({
   disable_netrw = true,
   hijack_netrw = true,
-  hijack_cursor = false,
+  hijack_cursor = true,
 
   view = {
     width = 32,
@@ -29,6 +29,8 @@ require('nvim-tree').setup({
 
   git = {
     enable = true,
+    ignore = true,
+    timeout = 200,
   },
 
   actions = {

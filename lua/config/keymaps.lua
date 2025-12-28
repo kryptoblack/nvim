@@ -43,8 +43,7 @@ vim.keymap.set('n', '<leader>f', function()
 end, { desc = 'Format buffer' })
 
 -- File explorer
-vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<CR>', { desc = 'Toggle file tree' })
-vim.keymap.set('n', '<leader>o', '<cmd>NvimTreeFocus<CR>', { desc = 'Focus file tree' })
+vim.keymap.set('n', '<C-b>', '<cmd>NvimTreeToggle<CR>', { desc = 'Smart NvimTree toggle' })
 
 -- Luasnip
 local ls = require('luasnip')
@@ -138,3 +137,11 @@ end, { desc = 'Go to mark (c)' })
 vim.keymap.set('n', '<M-f>', function()
   harpoon:list():select(4)
 end, { desc = 'Go to mark (d)' })
+
+-- Tabs
+-- NOTE: Use <n>gt to go to tab at position n
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New tab' })
+vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
+vim.keymap.set('n', '<leader>t]', ':tabnext<CR>', { desc = 'Next tab' })
+vim.keymap.set('n', '<leader>t[', ':tabprevious<CR>', { desc = 'Prev tab' })
+vim.keymap.set('n', '<leader>tw', '<C-w>T', { desc = 'Move window to new tab' })
