@@ -17,6 +17,23 @@ diffview.setup({
     },
   },
 
+  file_history_panel = {
+    win_config = {
+      height = 9,
+    },
+  },
+
+  keymaps = {
+    file_panel = {
+      { 'n', '<leader>e', false, { desc = 'diffview_ignore', noremap = true } },
+      { 'n', '<C-b>', false, { desc = 'diffview_ignore', noremap = true } },
+    },
+    file_history_panel = {
+      { 'n', '<leader>e', false, { desc = 'diffview_ignore', noremap = true } },
+      { 'n', '<C-b>', false, { desc = 'diffview_ignore', noremap = true } },
+    },
+  },
+
   hooks = {
     diff_buf_read = function()
       vim.opt_local.wrap = false

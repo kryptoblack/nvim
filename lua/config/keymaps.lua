@@ -43,9 +43,6 @@ vim.keymap.set('n', '<leader>f', function()
   format.format()
 end, { desc = 'Format buffer' })
 
--- File explorer
-vim.keymap.set('n', '<C-b>', '<cmd>NvimTreeToggle<CR>', { desc = 'Smart NvimTree toggle' })
-
 -- Luasnip
 local ls = require('luasnip')
 vim.keymap.set({ 'i', 's' }, '<C-j>', function()
@@ -99,21 +96,45 @@ vim.keymap.set('n', '<leader>gB', gs.blame, { desc = 'Preview blame' })
 vim.keymap.set('n', '<leader>gb', gs.blame_line, { desc = 'Preview blame line' })
 vim.keymap.set('n', '<leader>gs', gs.stage_buffer, { desc = 'Stage entire buffer' })
 
+-- Explorer
+vim.keymap.set('n', '<leader>e', function()
+  local ok, diffview = pcall(require, 'diffview.lib')
+
+  if ok and diffview.get_current_view() then
+    vim.cmd('DiffviewToggleFiles')
+    return
+  end
+
+  vim.cmd('NvimTreeToggle')
+end, { desc = '[E]xplorer (Diffview / NvimTree)' })
+
 -- Diffview
-vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { desc = 'Diffview: open' })
-vim.keymap.set('n', '<leader>gD', '<cmd>DiffviewClose<CR>', { desc = 'Diffview: close' })
-vim.keymap.set(
-  'n',
-  '<leader>gh',
-  '<cmd>DiffviewFileHistory %<CR>',
-  { desc = 'Diffview: current file history' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gH',
-  '<cmd>DiffviewFileHistory<CR>',
-  { desc = 'Diffview: file history' }
-)
+
+---Helper function to toggle diffview windows
+---@param open fun(): nil
+---@return nil
+local function diffview_toggle(open)
+  if next(require('diffview.lib').views) == nil then
+    open()
+  else
+    vim.cmd('DiffviewClose')
+  end
+end
+vim.keymap.set('n', '<leader>gd', function()
+  diffview_toggle(function()
+    vim.cmd('DiffviewOpen')
+  end)
+end, { desc = '[G]it [d]iff toggle', noremap = true })
+vim.keymap.set('n', '<leader>gh', function()
+  diffview_toggle(function()
+    vim.cmd('DiffviewFileHistory %')
+  end)
+end, { desc = 'Toggle [g]it [h]istory for file', noremap = true })
+vim.keymap.set('n', '<leader>gH', function()
+  diffview_toggle(function()
+    vim.cmd('DiffviewFileHistory')
+  end)
+end, { desc = 'Toggle [g]it [h]istory', noremap = true })
 
 -- Undotree
 vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<CR>', { desc = 'Undo tree' })
@@ -141,5 +162,6 @@ local tasks = require('utils.tasks')
 vim.keymap.set('n', '<leader>tr', tasks.rename, { desc = 'Rename tab' })
 vim.keymap.set('n', '<leader>tn', tasks.pick, { desc = 'New project workspace' })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
+vim.keymap.set('n', '<leader>tcd', ':TaskCwd<CR>', { desc = 'Task change directory' })
 vim.keymap.set('n', '<leader>tca', ':tabonly<CR>', { desc = 'Close all tabs other than current' })
 vim.keymap.set('n', '<leader>tw', '<C-w>T', { desc = 'Move window to new tab' })
