@@ -52,15 +52,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Tabs
-local function project_name()
-  local cwd = vim.fn.getcwd()
-  return vim.fn.fnamemodify(cwd, ':t')
-end
-
-vim.api.nvim_create_autocmd('TabNewEntered', {
-  callback = function()
-    if not vim.t.tabname then
-      vim.t.tabname = project_name()
-    end
-  end,
-})
+-- local project = require('utils.project')
+-- vim.api.nvim_create_autocmd('TabNewEntered', {
+--   callback = function()
+--     if not vim.t.tabname then
+--       vim.t.tabname = project.get_name()
+--     end
+--   end,
+--})

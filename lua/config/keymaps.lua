@@ -11,6 +11,7 @@ vim.keymap.set({ 'n', 'v' }, 'c', '"_c', { noremap = true })
 vim.keymap.set('n', 'D', '"_D', { noremap = true })
 vim.keymap.set('n', 'C', '"_C', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>d', '"+d', { desc = 'Cut to system clipboard' })
+vim.keymap.set('n', '<leader>D', '"+D', { desc = 'Cut to system clipboard' })
 
 -- Search direction
 vim.keymap.set(
@@ -125,21 +126,18 @@ end, { desc = 'List all harpoon marks' })
 vim.keymap.set('n', '<M-e>', function()
   harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = 'Toggle quick menu' })
-vim.keymap.set('n', '<M-a>', function()
-  harpoon:list():select(1)
-end, { desc = 'Go to mark (a)' })
-vim.keymap.set('n', '<M-s>', function()
-  harpoon:list():select(2)
-end, { desc = 'Go to mark (b)' })
-vim.keymap.set('n', '<M-d>', function()
-  harpoon:list():select(3)
-end, { desc = 'Go to mark (c)' })
-vim.keymap.set('n', '<M-f>', function()
-  harpoon:list():select(4)
-end, { desc = 'Go to mark (d)' })
+
+for i = 1, 10, 1 do
+  vim.keymap.set('n', '<M-' .. i .. '>', function()
+    harpoon:list():select(i)
+  end, { desc = 'Go to mark (' .. i .. ')' })
+end
 
 -- Tabs
 -- NOTE: Use <n>gt to go to tab at position n
+local tasks = require('utils.tasks')
+vim.keymap.set('n', '<leader>tr', tasks.rename, { desc = 'Rename tab' })
+vim.keymap.set('n', '<leader>tp', tasks.pick, { desc = 'New project workspace' })
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New tab' })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
 vim.keymap.set('n', '<leader>t]', ':tabnext<CR>', { desc = 'Next tab' })

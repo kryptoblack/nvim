@@ -37,13 +37,13 @@ lualine.setup({
         'diagnostics',
         sections = { 'error', 'warn', 'info', 'hint' },
       },
-    },
-    lualine_y = {
       {
         'searchcount',
         maxcount = 999,
         timeout = 500,
       },
+    },
+    lualine_y = {
       {
         'fileformat',
         symbols = {
@@ -59,39 +59,26 @@ lualine.setup({
     lualine_z = {
       { 'datetime', style = '%l:%m %p' },
     },
+  },
 
-    tabline = {
-      lualine_a = {
+  tabline = {
+    lualine_b = {
+      {
         'tabs',
-        path = '0',
-        mode = '1',
-
-        tab_max_length = '40',
-        max_length = '' .. vim.o.columns / 3,
-
-        show_modified_status = 'true',
-        symbols = {
-          modified = { '●' },
-          alternate_file = { '#' },
-          directory = { '' },
-          readonly = { '' },
-          unnamed = { '[No Name]' },
-          newfile = { '[New]' },
+        mode = 2,
+        tabs_color = {
+          active = 'TabLineSel',
+          inactive = 'TabLine',
         },
-        fmt = function(name, context)
-          local buflist = vim.fn.tabpagebuflist(context.tabnr)
-          local winnr = vim.fn.tabpagewinnr(context.tabnr)
-          local bufnr = buflist[winnr]
-          local mod = vim.fn.getbufvar(bufnr, '&mod')
-
-          return name .. (mod == 1 and ' +' or '')
-        end,
+        symbols = {
+          modified = '●',
+          alternate_file = '#',
+          directory = '',
+          readonly = '',
+          unnamed = '[No Name]',
+          newfile = '[New]',
+        },
       },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {},
     },
   },
 })

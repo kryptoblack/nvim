@@ -31,7 +31,7 @@ local servers = {
           library = {
             vim.env.VIMRUNTIME,
             vim.fn.stdpath('data') .. '/lazy', -- To add all the plugins to lua_ls
-            vim.fn.stdpath('data') .. '/site', -- Treesitter install dir
+            -- vim.fn.stdpath('data') .. '/site', -- Treesitter install dir
             '${3rd}/luv/library', -- https://github.com/NvChad/NvChad/issues/2960
           },
           checkThirdParty = false,
