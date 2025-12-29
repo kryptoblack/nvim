@@ -43,6 +43,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
+-- Highlight text on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
@@ -50,13 +51,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
-
--- Tabs
--- local project = require('utils.project')
--- vim.api.nvim_create_autocmd('TabNewEntered', {
---   callback = function()
---     if not vim.t.tabname then
---       vim.t.tabname = project.get_name()
---     end
---   end,
---})

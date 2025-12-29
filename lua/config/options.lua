@@ -17,7 +17,7 @@ vim.opt.confirm = false
 
 -- Timeout
 vim.opt.timeout = true
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 500
 
 -- Mouse
 vim.opt.mouse = ''

@@ -134,12 +134,12 @@ for i = 1, 10, 1 do
 end
 
 -- Tabs
--- NOTE: Use <n>gt to go to tab at position n
+-- <n>gt: go to tab at position n
+-- gt: go to next tab
+-- gT: go to prev tab
 local tasks = require('utils.tasks')
 vim.keymap.set('n', '<leader>tr', tasks.rename, { desc = 'Rename tab' })
-vim.keymap.set('n', '<leader>tp', tasks.pick, { desc = 'New project workspace' })
-vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New tab' })
+vim.keymap.set('n', '<leader>tn', tasks.pick, { desc = 'New project workspace' })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
-vim.keymap.set('n', '<leader>t]', ':tabnext<CR>', { desc = 'Next tab' })
-vim.keymap.set('n', '<leader>t[', ':tabprevious<CR>', { desc = 'Prev tab' })
+vim.keymap.set('n', '<leader>tca', ':tabonly<CR>', { desc = 'Close all tabs other than current' })
 vim.keymap.set('n', '<leader>tw', '<C-w>T', { desc = 'Move window to new tab' })

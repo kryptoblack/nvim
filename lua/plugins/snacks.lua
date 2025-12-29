@@ -1,6 +1,5 @@
 ---@type Snacks
 local snacks = require('snacks')
-snacks.input.enable()
 
 local header = [[
 ██╗   ██╗███████╗ ██████╗ ██████╗ ██████╗ ███████╗
@@ -19,7 +18,25 @@ snacks.setup({
     sections = {
       { section = 'header' },
       { icon = ' ', title = 'Keymaps', section = 'keys', indent = 2, padding = 1 },
-      { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
+      function(_)
+        return {
+          icon = ' ',
+          title = 'Projects',
+          section = 'projects',
+          indent = 2,
+          padding = 1,
+          limit = 5,
+          key = 'o',
+          action = function(value)
+            if type(value) == 'string' then
+              require('utils.tmux-sessionizer').open(value)
+            else
+              require('utils.tmux-sessionizer').open()
+            end
+          end,
+          pick = false,
+        }
+      end,
       { section = 'startup' },
     },
   },
@@ -29,5 +46,4 @@ snacks.setup({
       preset = 'ivy',
     },
   },
-  input = {},
 })

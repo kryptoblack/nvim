@@ -17,7 +17,6 @@ local TASK_NAMES = {
 --- @param arglead string
 --- @return string[]
 function _G.TaskCompletion(arglead, _, _)
-  print(vim.inspect(arglead))
   return vim.tbl_filter(function(name)
     return vim.startswith(name:upper(), arglead:upper())
   end, TASK_NAMES)
