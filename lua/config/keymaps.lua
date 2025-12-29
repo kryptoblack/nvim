@@ -192,75 +192,96 @@ vim.keymap.set('n', '<leader>tcd', ':TaskCwd<CR>', { desc = 'Task change directo
 vim.keymap.set('n', '<leader>tca', ':tabonly<CR>', { desc = 'Close all tabs other than current' })
 vim.keymap.set('n', '<leader>tw', '<C-w>T', { desc = 'Move window to new tab' })
 
--- textobjects
-vim.keymap.set({ 'x', 'o' }, 'af', function()
-  require('nvim-treesitter-textobjects.select').select_textobject('@function.outer', 'textobjects')
-end)
-vim.keymap.set({ 'x', 'o' }, 'if', function()
-  require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
-end)
-vim.keymap.set({ 'x', 'o' }, 'ac', function()
-  require('nvim-treesitter-textobjects.select').select_textobject('@class.outer', 'textobjects')
-end)
-vim.keymap.set({ 'x', 'o' }, 'ic', function()
-  require('nvim-treesitter-textobjects.select').select_textobject('@class.inner', 'textobjects')
-end)
--- You can also use captures from other query groups like `locals.scm`
-vim.keymap.set({ 'x', 'o' }, 'as', function()
-  require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
-end)
+-- textobjects (https://www.josean.com/posts/nvim-treesitter-and-textobjects)
+local tst_select = require('nvim-treesitter-textobjects.select')
 
-vim.keymap.set('n', '<leader>a', function()
-  require('nvim-treesitter-textobjects.swap').swap_next('@parameter.inner')
-end)
-vim.keymap.set('n', '<leader>A', function()
-  require('nvim-treesitter-textobjects.swap').swap_next('@parameter.outer')
-end)
+local select_maps = {
+  ['a='] = '@assignment.outer',
+  ['i='] = '@assignment.inner',
+  ['l='] = '@assignment.lhs',
+  ['r='] = '@assignment.rhs',
+  ['aa'] = '@parameter.outer',
+  ['ia'] = '@parameter.inner',
+  ['ai'] = '@conditional.outer',
+  ['ii'] = '@conditional.inner',
+  ['al'] = '@loop.outer',
+  ['il'] = '@loop.inner',
+  ['ak'] = '@call.outer',
+  ['ik'] = '@call.inner',
+  ['af'] = '@function.outer',
+  ['if'] = '@function.inner',
+  ['am'] = '@method.outer',
+  ['im'] = '@method.inner',
+  ['ac'] = '@class.outer',
+  ['ic'] = '@class.inner',
+}
 
-vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
-  require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, ']]', function()
-  require('nvim-treesitter-textobjects.move').goto_next_start('@class.outer', 'textobjects')
-end)
--- You can also pass a list to group multiple queries.
-vim.keymap.set({ 'n', 'x', 'o' }, ']o', function()
-  move.goto_next_start({ '@loop.inner', '@loop.outer' }, 'textobjects')
-end)
--- You can also use captures from other query groups like `locals.scm` or `folds.scm`
-vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
-  require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, ']z', function()
-  require('nvim-treesitter-textobjects.move').goto_next_start('@fold', 'folds')
-end)
+for key, query in pairs(select_maps) do
+  vim.keymap.set({ 'x', 'o' }, key, function()
+    tst_select.select_textobject(query, 'textobjects')
+  end)
+end
 
-vim.keymap.set({ 'n', 'x', 'o' }, ']M', function()
-  require('nvim-treesitter-textobjects.move').goto_next_end('@function.outer', 'textobjects')
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, '][', function()
-  require('nvim-treesitter-textobjects.move').goto_next_end('@class.outer', 'textobjects')
-end)
+local tst_swap = require('nvim-treesitter-textobjects.swap')
 
-vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
-  require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, '[[', function()
-  require('nvim-treesitter-textobjects.move').goto_previous_start('@class.outer', 'textobjects')
-end)
+local swap_next = {
+  ['<leader>na'] = '@parameter.inner',
+  ['<leader>nf'] = '@function.outer',
+}
+local swap_prev = {
+  ['<leader>pa'] = '@parameter.inner',
+  ['<leader>pf'] = '@function.outer',
+}
 
-vim.keymap.set({ 'n', 'x', 'o' }, '[M', function()
-  require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects')
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, '[]', function()
-  require('nvim-treesitter-textobjects.move').goto_previous_end('@class.outer', 'textobjects')
-end)
+for key, query in pairs(swap_next) do
+  vim.keymap.set('n', key, function()
+    tst_swap.swap_next(query)
+  end)
+end
+for key, query in pairs(swap_prev) do
+  vim.keymap.set('n', key, function()
+    tst_swap.swap_previous(query)
+  end)
+end
 
--- Go to either the start or the end, whichever is closer.
--- Use if you want more granular movements
-vim.keymap.set({ 'n', 'x', 'o' }, ']d', function()
-  require('nvim-treesitter-textobjects.move').goto_next('@conditional.outer', 'textobjects')
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, '[d', function()
-  require('nvim-treesitter-textobjects.move').goto_previous('@conditional.outer', 'textobjects')
-end)
+local tst_move = require('nvim-treesitter-textobjects.move')
+
+local move_configs = {
+  -- Next Start
+  { key = ']k', query = '@call.outer', func = tst_move.goto_next_start },
+  { key = ']f', query = '@function.outer', func = tst_move.goto_next_start },
+  { key = ']c', query = '@class.outer', func = tst_move.goto_next_start },
+  { key = ']i', query = '@conditional.outer', func = tst_move.goto_next_start },
+  { key = ']l', query = '@loop.outer', func = tst_move.goto_next_start },
+  { key = ']s', query = '@scope', func = tst_move.goto_next_start, group = 'locals' },
+  { key = ']z', query = '@fold', func = tst_move.goto_next_start, group = 'folds' },
+
+  -- Next End
+  { key = ']K', query = '@call.outer', func = tst_move.goto_next_end },
+  { key = ']F', query = '@function.outer', func = tst_move.goto_next_end },
+  { key = ']C', query = '@class.outer', func = tst_move.goto_next_end },
+  { key = ']I', query = '@conditional.outer', func = tst_move.goto_next_end },
+  { key = ']L', query = '@loop.outer', func = tst_move.goto_next_end },
+
+  -- Previous Start
+  { key = '[k', query = '@call.outer', func = tst_move.goto_previous_start },
+  { key = '[f', query = '@function.outer', func = tst_move.goto_previous_start },
+  { key = '[c', query = '@class.outer', func = tst_move.goto_previous_start },
+  { key = '[i', query = '@conditional.outer', func = tst_move.goto_previous_start },
+  { key = '[l', query = '@loop.outer', func = tst_move.goto_previous_start },
+
+  -- Previous End
+  { key = '[K', query = '@call.outer', func = tst_move.goto_previous_end },
+  { key = '[F', query = '@function.outer', func = tst_move.goto_previous_end },
+  { key = '[C', query = '@class.outer', func = tst_move.goto_previous_end },
+  { key = '[I', query = '@conditional.outer', func = tst_move.goto_previous_end },
+  { key = '[L', query = '@loop.outer', func = tst_move.goto_previous_end },
+}
+
+for _, m in ipairs(move_configs) do
+  vim.keymap.set({ 'n', 'x', 'o' }, m.key, function()
+    vim.cmd("normal! m'")
+    m.func(m.query, m.group or 'textobjects')
+    vim.cmd('normal! zz')
+  end, { desc = m.desc or m.query })
+end
