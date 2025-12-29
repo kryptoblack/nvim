@@ -66,8 +66,24 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Tabs
 -- Autoapply cwd on tab switch
-vim.api.nvim_create_autocmd("TabEnter", {
+vim.api.nvim_create_autocmd('TabEnter', {
   callback = function()
-    require("utils.tasks").cwd.apply()
+    require('utils.tasks').cwd.apply()
+  end,
+})
+
+-- Treesitter
+-- https://www.reddit.com/r/neovim/comments/1kuj9xm/comment/mv93w7h/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Enable treesitter highlighting',
+  pattern = PARSERS,
+  callback = function(ctx)
+    local hasStarted = pcall(vim.treesitter.start) -- errors for filetypes with no parser
+
+    -- indent
+    local noIndent = {}
+    if hasStarted and not vim.list_contains(noIndent, ctx.match) then
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
   end,
 })

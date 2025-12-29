@@ -32,11 +32,14 @@ local servers = {
         },
         workspace = {
           library = {
-            vim.env.VIMRUNTIME,
-            vim.fn.stdpath('data') .. '/lazy', -- To add all the plugins to lua_ls
-            -- vim.fn.stdpath('data') .. '/site', -- Treesitter install dir
+            vim.fn.expand(vim.env.VIMRUNTIME .. '/lua'),
+            vim.fn.expand(vim.env.VIMRUNTIME .. '/lua/vim/lsp'),
+            vim.fn.stdpath('data') .. '/lazy/lazy.nvim/lua/lazy',
+            vim.fn.stdpath('data') .. '/site', -- Treesitter install dir
             '${3rd}/luv/library', -- https://github.com/NvChad/NvChad/issues/2960
           },
+          maxPreload = 100000,
+          preloadFileSize = 10000,
           checkThirdParty = false,
         },
         telemetry = {

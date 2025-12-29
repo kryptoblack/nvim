@@ -28,18 +28,20 @@ require('lazy').setup({
   'neovim/nvim-lspconfig',
 
   -- Treesitter
-  {
-    'nvim-treesitter/nvim-treesitter',
-    lazy = false,
-    build = ':TSUpdate',
-  },
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    branch = 'main',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-    },
-  },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter',
+  --   branch = 'main',
+  --   lazy = false,
+  --   build = ':TSUpdate',
+  -- },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-textobjects',
+  --   branch = 'main',
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --   },
+  -- },
+  require('plugins.treesitter'),
 
   -- Mason (LSP Package Manager)
   'williamboman/mason.nvim',
@@ -129,4 +131,10 @@ require('lazy').setup({
 
   -- wakatime
   { 'wakatime/vim-wakatime', lazy = false },
+
+  -- Neotree
+  require('plugins.neotree'),
+
+  -- Showkeys
+  require('plugins.showkeys'),
 }, opts)

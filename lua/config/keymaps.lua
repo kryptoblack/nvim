@@ -28,7 +28,6 @@ vim.keymap.set(
 )
 
 -- Diagnostics
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open diagnostic message' })
 vim.keymap.set('n', '[d', function()
   vim.diagnostic.goto_diagnostic(-1)
 end, { desc = 'Go to previous diagnostic' })
@@ -92,6 +91,32 @@ vim.keymap.set('n', '[gh', function()
 end, { desc = 'Previous git hunk' })
 vim.keymap.set('n', '<leader>ghs', gs.stage_hunk, { desc = 'Stage hunk' })
 vim.keymap.set('n', '<leader>ghr', gs.reset_hunk, { desc = 'Reset hunk' })
+vim.keymap.set('n', '<leader>gr', function()
+  local file = vim.fn.expand('%')
+  vim.system({ 'git', 'restore', file }, {}, function(obj)
+    if obj.code == 0 then
+      vim.schedule(function()
+        vim.cmd('edit!')
+        print('Restored: ' .. file)
+      end)
+    else
+      vim.notify('Failed to perform git restore on file: ' .. file, vim.log.levels.ERROR)
+    end
+  end)
+end, { desc = 'Restore current file' })
+vim.keymap.set('n', '<leader>gu', function()
+  local file = vim.fn.expand('%')
+  vim.system({ 'git', 'restore', '--staged', file }, {}, function(obj)
+    if obj.code == 0 then
+      vim.schedule(function()
+        vim.cmd('edit!')
+        print('Restored: ' .. file)
+      end)
+    else
+      vim.notify('Failed to perform unstage on file: ' .. file, vim.log.levels.ERROR)
+    end
+  end)
+end, { desc = 'Unstage current file' })
 vim.keymap.set('n', '<leader>gB', gs.blame, { desc = 'Preview blame' })
 vim.keymap.set('n', '<leader>gb', gs.blame_line, { desc = 'Preview blame line' })
 vim.keymap.set('n', '<leader>gs', gs.stage_buffer, { desc = 'Stage entire buffer' })
@@ -105,7 +130,8 @@ vim.keymap.set('n', '<leader>e', function()
     return
   end
 
-  vim.cmd('NvimTreeToggle')
+  -- vim.cmd('NvimTreeToggle')
+  vim.cmd('Neotree toggle=true')
 end, { desc = '[E]xplorer (Diffview / NvimTree)' })
 
 -- Diffview
@@ -165,3 +191,76 @@ vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
 vim.keymap.set('n', '<leader>tcd', ':TaskCwd<CR>', { desc = 'Task change directory' })
 vim.keymap.set('n', '<leader>tca', ':tabonly<CR>', { desc = 'Close all tabs other than current' })
 vim.keymap.set('n', '<leader>tw', '<C-w>T', { desc = 'Move window to new tab' })
+
+-- textobjects
+vim.keymap.set({ 'x', 'o' }, 'af', function()
+  require('nvim-treesitter-textobjects.select').select_textobject('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'x', 'o' }, 'if', function()
+  require('nvim-treesitter-textobjects.select').select_textobject('@function.inner', 'textobjects')
+end)
+vim.keymap.set({ 'x', 'o' }, 'ac', function()
+  require('nvim-treesitter-textobjects.select').select_textobject('@class.outer', 'textobjects')
+end)
+vim.keymap.set({ 'x', 'o' }, 'ic', function()
+  require('nvim-treesitter-textobjects.select').select_textobject('@class.inner', 'textobjects')
+end)
+-- You can also use captures from other query groups like `locals.scm`
+vim.keymap.set({ 'x', 'o' }, 'as', function()
+  require('nvim-treesitter-textobjects.select').select_textobject('@local.scope', 'locals')
+end)
+
+vim.keymap.set('n', '<leader>a', function()
+  require('nvim-treesitter-textobjects.swap').swap_next('@parameter.inner')
+end)
+vim.keymap.set('n', '<leader>A', function()
+  require('nvim-treesitter-textobjects.swap').swap_next('@parameter.outer')
+end)
+
+vim.keymap.set({ 'n', 'x', 'o' }, ']m', function()
+  require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, ']]', function()
+  require('nvim-treesitter-textobjects.move').goto_next_start('@class.outer', 'textobjects')
+end)
+-- You can also pass a list to group multiple queries.
+vim.keymap.set({ 'n', 'x', 'o' }, ']o', function()
+  move.goto_next_start({ '@loop.inner', '@loop.outer' }, 'textobjects')
+end)
+-- You can also use captures from other query groups like `locals.scm` or `folds.scm`
+vim.keymap.set({ 'n', 'x', 'o' }, ']s', function()
+  require('nvim-treesitter-textobjects.move').goto_next_start('@local.scope', 'locals')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, ']z', function()
+  require('nvim-treesitter-textobjects.move').goto_next_start('@fold', 'folds')
+end)
+
+vim.keymap.set({ 'n', 'x', 'o' }, ']M', function()
+  require('nvim-treesitter-textobjects.move').goto_next_end('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '][', function()
+  require('nvim-treesitter-textobjects.move').goto_next_end('@class.outer', 'textobjects')
+end)
+
+vim.keymap.set({ 'n', 'x', 'o' }, '[m', function()
+  require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[[', function()
+  require('nvim-treesitter-textobjects.move').goto_previous_start('@class.outer', 'textobjects')
+end)
+
+vim.keymap.set({ 'n', 'x', 'o' }, '[M', function()
+  require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[]', function()
+  require('nvim-treesitter-textobjects.move').goto_previous_end('@class.outer', 'textobjects')
+end)
+
+-- Go to either the start or the end, whichever is closer.
+-- Use if you want more granular movements
+vim.keymap.set({ 'n', 'x', 'o' }, ']d', function()
+  require('nvim-treesitter-textobjects.move').goto_next('@conditional.outer', 'textobjects')
+end)
+vim.keymap.set({ 'n', 'x', 'o' }, '[d', function()
+  require('nvim-treesitter-textobjects.move').goto_previous('@conditional.outer', 'textobjects')
+end)
