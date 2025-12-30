@@ -19,7 +19,7 @@ require('lua.plugins.my-snacks')
 require('plugins.todo')
 require('plugins.git-signs')
 require('plugins.diffview')
-require('plugins.harpoon')
+require('lua.plugins.my-harpoon')
 require('plugins.notify')
 require('plugins.smear-cursor')
 

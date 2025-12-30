@@ -166,7 +166,7 @@ end, { desc = 'Toggle [g]it [h]istory', noremap = true })
 -- Undotree
 vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<CR>', { desc = 'Undo tree' })
 
-local harpoon = require('harpoon')
+local harpoon = require('lua.plugins.my-harpoon')
 vim.keymap.set('n', '<leader>a', function()
   harpoon:list():add()
 end, { desc = 'List all harpoon marks' })

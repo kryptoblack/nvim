@@ -69,12 +69,6 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 
-  -- File explorer
-  -- {
-  --   'nvim-tree/nvim-tree.lua',
-  --   dependencies = { 'nvim-tree/nvim-web-devicons' },
-  -- },
-
   -- Comments
   'numToStr/Comment.nvim',
   'JoosepAlviste/nvim-ts-context-commentstring',
@@ -103,11 +97,7 @@ require('lazy').setup({
   'mbbill/undotree',
 
   -- Harpoon
-  {
-    'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
+  require('lua.plugins.my-harpoon'),
 
   -- Notify & LSP progress
   { 'j-hui/fidget.nvim', dependencies = { 'nvim-lspconfig' } },

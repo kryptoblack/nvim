@@ -32,6 +32,7 @@ local servers = {
         },
         workspace = {
           library = {
+            -- TODO: add all nvim related runtime only if in nvim config
             vim.fn.expand(vim.env.VIMRUNTIME .. '/lua'),
             vim.fn.expand(vim.env.VIMRUNTIME .. '/lua/vim/lsp'),
             vim.fn.stdpath('data') .. '/lazy/lazy.nvim/lua/lazy',
