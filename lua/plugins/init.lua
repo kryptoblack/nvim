@@ -25,57 +25,34 @@ local opts = {
 
 require('lazy').setup({
   'nvim-lua/plenary.nvim',
-  'neovim/nvim-lspconfig',
 
-  require('plugins.treesitter'),
+  -- LSP
+  require('lua.plugins.lsp'),
+
+  -- Treesitter
+  require('lua.plugins.treesitter'),
 
   -- Mason (LSP Package Manager)
-  'williamboman/mason.nvim',
-  'williamboman/mason-lspconfig.nvim',
+  require('lua.plugins.my-mason'),
 
   -- Formatting / linting
-  'nvimtools/none-ls.nvim',
+  require('lua.plugins.none-ls'),
 
   -- Auto completion
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'dnnr1/lorem-ipsum.nvim',
-      'hrsh7th/cmp-nvim-lua',
-    },
-  },
-  {
-    'L3MON4D3/LuaSnip',
-    dependencies = {
-      'saadparwaiz1/cmp_luasnip',
-      'rafamadriz/friendly-snippets',
-    },
-  },
+  require('lua.plugins.cmp'),
+
+  -- Snippets
+  require('lua.plugins.snippets'),
 
   -- Colorscheme
-  {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    lazy = false,
-    priority = 1000,
-  },
+  require('lua.plugins.colorscheme'),
 
   -- Statusbar
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
+  require('lua.plugins.my-lualine'),
 
   -- Comments
-  'numToStr/Comment.nvim',
-  'JoosepAlviste/nvim-ts-context-commentstring',
-  {
-    'folke/todo-comments.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
+  require('lua.plugins.comments'),
+  require('lua.plugins.todo'),
 
   -- Surround
   'kylechui/nvim-surround',
@@ -84,14 +61,11 @@ require('lazy').setup({
   'mg979/vim-visual-multi',
 
   -- Picker
-  'folke/snacks.nvim',
+  require('lua.plugins.my-snacks'),
 
   -- Git
-  'lewis6991/gitsigns.nvim',
-  {
-    'sindrets/diffview.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-  },
+  require('lua.plugins.my-gitsigns'),
+  require('lua.plugins.my-diffview'),
 
   -- Undotree
   'mbbill/undotree',
@@ -103,7 +77,7 @@ require('lazy').setup({
   { 'j-hui/fidget.nvim', dependencies = { 'nvim-lspconfig' } },
 
   -- Smear cursor
-  'sphamba/smear-cursor.nvim',
+  require('lua.plugins.smear-cursor'),
 
   -- wakatime
   { 'wakatime/vim-wakatime', lazy = false },

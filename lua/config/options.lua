@@ -82,7 +82,7 @@ vim.opt.foldlevelstart = 99 -- no folds on file open
 vim.opt.foldcolumn = '0' -- no extra gutter noise
 
 -- Tabs
-vim.opt.showtabline = 2
+vim.opt.showtabline = 1
 vim.opt.switchbuf = 'useopen'
 vim.opt.splitright = true
 vim.opt.splitbelow = true

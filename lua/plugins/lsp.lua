@@ -1,7 +1,4 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-local on_attach = function(client, bufnr)
+local lsp_on_attach = function(client, bufnr)
   if client.name ~= 'null-ls' then
     client.server_capabilities.documentFormatterProvider = false
   end
@@ -51,12 +48,22 @@ local servers = {
   },
 }
 
-for server, config in pairs(servers) do
-  vim.lsp.config(
-    server,
-    vim.tbl_deep_extend('force', {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    }, config)
-  )
+local function on_attach()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+  for server, config in pairs(servers) do
+    vim.lsp.config(
+      server,
+      vim.tbl_deep_extend('force', {
+        on_attach = lsp_on_attach,
+        capabilities = capabilities,
+      }, config)
+    )
+  end
 end
+
+return {
+  'neovim/nvim-lspconfig',
+  config = on_attach,
+}
