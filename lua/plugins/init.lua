@@ -27,20 +27,6 @@ require('lazy').setup({
   'nvim-lua/plenary.nvim',
   'neovim/nvim-lspconfig',
 
-  -- Treesitter
-  -- {
-  --   'nvim-treesitter/nvim-treesitter',
-  --   branch = 'main',
-  --   lazy = false,
-  --   build = ':TSUpdate',
-  -- },
-  -- {
-  --   'nvim-treesitter/nvim-treesitter-textobjects',
-  --   branch = 'main',
-  --   dependencies = {
-  --     'nvim-treesitter/nvim-treesitter',
-  --   },
-  -- },
   require('plugins.treesitter'),
 
   -- Mason (LSP Package Manager)
@@ -84,10 +70,10 @@ require('lazy').setup({
   },
 
   -- File explorer
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' },
+  -- },
 
   -- Comments
   'numToStr/Comment.nvim',

@@ -33,7 +33,7 @@ end
 --- @return boolean
 M.set_name = function(name)
   if not name or name == '' then
-    vim.notify('Tab name is empty', 'warn')
+    vim.notify('Tab name is empty', vim.log.levels.WARN)
     return false
   end
 

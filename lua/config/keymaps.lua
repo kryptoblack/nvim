@@ -29,12 +29,14 @@ vim.keymap.set(
 
 -- Diagnostics
 vim.keymap.set('n', '[d', function()
-  vim.diagnostic.goto_diagnostic(-1)
+  vim.diagnostic.jump({ count = -1 })
 end, { desc = 'Go to previous diagnostic' })
 vim.keymap.set('n', ']d', function()
-  vim.diagnostic.goto_diagnostic(1)
+  vim.diagnostic.jump({ count = 1 })
 end, { desc = 'Go to next diagnostic' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Diagnostics' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist)
+vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist)
 
 -- Formatting
 local format = require('utils.format')
@@ -65,7 +67,6 @@ end
 -- Buffer
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
 
----@type Snacks
 local snacks = require('snacks')
 vim.keymap.set('n', '<leader>ff', function()
   snacks.picker.files({ hidden = true })
@@ -79,15 +80,15 @@ end, { desc = 'Diagnostics (buffer)' })
 vim.keymap.set('n', '<leader>fD', snacks.picker.diagnostics, { desc = 'Diagnostics (workspace)' })
 vim.keymap.set('n', '<leader>fb', snacks.picker.buffers, { desc = 'Buffers' })
 vim.keymap.set('n', '<leader>ft', function()
-  snacks.picker.todo_comments() ---@diagnostic disable-line: undefined-field
+  snacks.picker.todo_comments()
 end, { desc = 'TODO picker' })
 
 local gs = require('gitsigns')
 vim.keymap.set('n', ']gh', function()
-  gs.nav_hunk('next') ---@diagnostic disable-line: param-type-mismatch
+  gs.nav_hunk('next')
 end, { desc = 'Next git hunk' })
 vim.keymap.set('n', '[gh', function()
-  gs.nav_hunk('prev') ---@diagnostic disable-line: param-type-mismatch
+  gs.nav_hunk('prev')
 end, { desc = 'Previous git hunk' })
 vim.keymap.set('n', '<leader>ghs', gs.stage_hunk, { desc = 'Stage hunk' })
 vim.keymap.set('n', '<leader>ghr', gs.reset_hunk, { desc = 'Reset hunk' })
@@ -165,7 +166,6 @@ end, { desc = 'Toggle [g]it [h]istory', noremap = true })
 -- Undotree
 vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<CR>', { desc = 'Undo tree' })
 
----@type Harpoon
 local harpoon = require('harpoon')
 vim.keymap.set('n', '<leader>a', function()
   harpoon:list():add()

@@ -1,4 +1,3 @@
----@type Snacks
 local snacks = require('snacks')
 
 local header = [[
