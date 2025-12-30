@@ -76,7 +76,7 @@ vim.api.nvim_create_autocmd('TabEnter', {
 -- https://www.reddit.com/r/neovim/comments/1kuj9xm/comment/mv93w7h/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 vim.api.nvim_create_autocmd('FileType', {
   desc = 'Enable treesitter highlighting',
-  pattern = PARSERS,
+  pattern = require('config.constants').parsers,
   callback = function(ctx)
     local hasStarted = pcall(vim.treesitter.start) -- errors for filetypes with no parser
 
