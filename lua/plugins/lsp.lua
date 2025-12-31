@@ -65,5 +65,6 @@ end
 
 return {
   'neovim/nvim-lspconfig',
+  event = { 'BufReadPre', 'BufNewFile' },
   config = on_attach,
 }

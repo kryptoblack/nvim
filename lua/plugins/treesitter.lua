@@ -2,6 +2,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
+    event = { 'BufReadPre', 'BufNewFile' },
     build = ':TSUpdate',
     config = function()
       local ts = require('nvim-treesitter')
@@ -19,6 +20,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
+    event = 'BufRead',
     branch = 'main',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {

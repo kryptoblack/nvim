@@ -3,7 +3,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Plugins
-require('lua.plugins.init')
+require('plugins.init')
 
 -- Core configuration
 require('config.options')

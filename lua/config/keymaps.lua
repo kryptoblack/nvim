@@ -68,18 +68,18 @@ end
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
 
 local snacks = require('snacks')
-vim.keymap.set('n', '<leader>ff', function()
+vim.keymap.set('n', '<leader>sf', function()
   snacks.picker.files({ hidden = true })
 end, { desc = 'Find files' })
-vim.keymap.set('n', '<leader>fr', snacks.picker.recent, { desc = 'Recent files' })
-vim.keymap.set('n', '<leader>fg', snacks.picker.grep, { desc = 'Live grep' })
-vim.keymap.set('n', '<leader>fs', snacks.picker.lsp_symbols, { desc = 'LSP symbols' })
-vim.keymap.set('n', '<leader>fd', function()
+vim.keymap.set('n', '<leader>sr', snacks.picker.recent, { desc = 'Recent files' })
+vim.keymap.set('n', '<leader>sg', snacks.picker.grep, { desc = 'Live grep' })
+vim.keymap.set('n', '<leader>ss', snacks.picker.lsp_symbols, { desc = 'LSP symbols' })
+vim.keymap.set('n', '<leader>sd', function()
   snacks.picker.diagnostics({ bufnr = 0 })
 end, { desc = 'Diagnostics (buffer)' })
-vim.keymap.set('n', '<leader>fD', snacks.picker.diagnostics, { desc = 'Diagnostics (workspace)' })
-vim.keymap.set('n', '<leader>fb', snacks.picker.buffers, { desc = 'Buffers' })
-vim.keymap.set('n', '<leader>ft', function()
+vim.keymap.set('n', '<leader>sD', snacks.picker.diagnostics, { desc = 'Diagnostics (workspace)' })
+vim.keymap.set('n', '<leader>sb', snacks.picker.buffers, { desc = 'Buffers' })
+vim.keymap.set('n', '<leader>st', function()
   snacks.picker.todo_comments()
 end, { desc = 'TODO picker' })
 
@@ -131,7 +131,6 @@ vim.keymap.set('n', '<leader>e', function()
     return
   end
 
-  -- vim.cmd('NvimTreeToggle')
   vim.cmd('Neotree toggle=true')
 end, { desc = '[E]xplorer (Diffview / NvimTree)' })
 

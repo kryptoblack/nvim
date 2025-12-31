@@ -45,6 +45,7 @@ end
 
 return {
   'sindrets/diffview.nvim',
+  -- event = { 'DiffviewOpen', 'DiffviewFileHistory' },
   dependencies = { 'nvim-lua/plenary.nvim' },
   config = on_attach,
 }
