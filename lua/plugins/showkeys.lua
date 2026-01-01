@@ -2,7 +2,7 @@ return {
   'nvzone/showkeys',
   event = 'VeryLazy',
   opts = {
-    position = 'top-right',
+    position = 'bottom-right',
     show_count = true,
     timeout = 1,
     maxkeys = 5,
