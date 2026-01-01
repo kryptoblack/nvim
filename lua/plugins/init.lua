@@ -87,4 +87,7 @@ require('lazy').setup({
 
   -- Showkeys
   require('plugins.showkeys'),
+
+  -- Autopairs
+  { 'windwp/nvim-autopairs', event = 'InsertEnter', config = true, opts = {} },
 }, opts)
