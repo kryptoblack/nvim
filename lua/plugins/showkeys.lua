@@ -1,13 +1,14 @@
-local config = {
-  position = 'top-right',
-  show_count = true,
-  timeout = 1,
-  maxkeys = 5,
-}
-
--- FIXME: ShowkeysToggle not triggering via cmd
 return {
   'nvzone/showkeys',
-  cmd = 'ShowkeysToggle',
-  opts = config,
+  event = 'VeryLazy',
+  opts = {
+    position = 'top-right',
+    show_count = true,
+    timeout = 1,
+    maxkeys = 5,
+  },
+  config = function(_, opts)
+    require('showkeys').setup(opts)
+    vim.cmd('ShowkeysToggle')
+  end,
 }
