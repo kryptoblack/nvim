@@ -98,4 +98,6 @@ end
 return {
   'folke/snacks.nvim',
   config = on_attach,
+  priority = 1000,
+  lazy = false,
 }
