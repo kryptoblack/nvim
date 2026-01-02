@@ -12,6 +12,7 @@ return {
   },
   config = function(_, opts)
     require('showkeys').setup(opts)
-    vim.cmd('ShowkeysToggle')
+    -- Uncomment if you require showkeys on startup
+    -- vim.cmd('ShowkeysToggle')
   end,
 }

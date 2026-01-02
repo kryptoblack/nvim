@@ -42,13 +42,7 @@ local function on_attach()
               require('utils.tmux-sessionizer').open(vim.fn.stdpath('config'))
             end,
           },
-          {
-            icon = ' ',
-            key = 's',
-            desc = 'Restore Session',
-            action = function() end,
-            enabled = true,
-          },
+          { icon = ' ', key = 's', desc = 'Restore Session', section = 'session' },
           {
             icon = '󰒲 ',
             key = 'L',

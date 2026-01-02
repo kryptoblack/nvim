@@ -90,4 +90,7 @@ require('lazy').setup({
 
   -- Autopairs
   { 'windwp/nvim-autopairs', event = 'InsertEnter', config = true, opts = {} },
+
+  -- Sessions
+  require('plugins.sessions'),
 }, opts)

@@ -8,7 +8,18 @@ return {
       'MunifTanjim/nui.nvim',
       'nvim-tree/nvim-web-devicons',
     },
-    config = function()
+    config = function(_, opts)
+      local snacks = require('snacks')
+      local function on_move(data)
+        snacks.rename.on_rename_file(data.source, data.destination)
+      end
+      local events = require('neo-tree.events')
+      opts.event_handlers = opts.event_handlers or {}
+      vim.list_extend(opts.event_handlers, {
+        { event = events.FILE_MOVED, handler = on_move },
+        { event = events.FILE_RENAMED, handler = on_move },
+      })
+
       require('neo-tree').setup({
         close_if_last_window = true,
         clipboard = { sync = 'global' },
@@ -38,17 +49,17 @@ return {
       })
     end,
   },
-  {
-    'antosha417/nvim-lsp-file-operations',
-    cmd = 'Neotree',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-neo-tree/neo-tree.nvim', -- makes sure that this loads after Neo-tree.
-    },
-    config = function()
-      require('lsp-file-operations').setup()
-    end,
-  },
+  -- {
+  --   'antosha417/nvim-lsp-file-operations',
+  --   cmd = 'Neotree',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-neo-tree/neo-tree.nvim', -- makes sure that this loads after Neo-tree.
+  --   },
+  --   config = function()
+  --     require('lsp-file-operations').setup()
+  --   end,
+  -- },
   {
     's1n7ax/nvim-window-picker',
     version = '2.*',
