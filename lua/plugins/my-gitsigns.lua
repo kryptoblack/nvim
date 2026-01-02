@@ -25,6 +25,6 @@ end
 
 return {
   'lewis6991/gitsigns.nvim',
-  event = 'VeryLazy',
+  event = { 'BufReadPre', 'BufNewFile' },
   config = on_attach,
 }

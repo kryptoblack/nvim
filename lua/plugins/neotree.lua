@@ -2,6 +2,7 @@ return {
   {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v3.x',
+    event = 'VeryLazy',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
@@ -39,6 +40,7 @@ return {
   },
   {
     'antosha417/nvim-lsp-file-operations',
+    cmd = 'Neotree',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-neo-tree/neo-tree.nvim', -- makes sure that this loads after Neo-tree.
@@ -50,6 +52,7 @@ return {
   {
     's1n7ax/nvim-window-picker',
     version = '2.*',
+    cmd = 'Neotree',
     opts = {
       filter_rules = {
         autoselect_one = true,

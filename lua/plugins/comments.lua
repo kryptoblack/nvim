@@ -25,11 +25,13 @@ end
 return {
   {
     'numToStr/Comment.nvim',
+    event = 'VeryLazy',
     dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
     config = on_attach,
   },
   {
     'JoosepAlviste/nvim-ts-context-commentstring',
+    event = 'VeryLazy',
     opts = { enable_autocmd = false },
   },
 }

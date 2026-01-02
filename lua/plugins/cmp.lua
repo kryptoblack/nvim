@@ -37,5 +37,6 @@ return {
     'dnnr1/lorem-ipsum.nvim',
     'hrsh7th/cmp-nvim-lua',
   },
+  lazy = true,
   config = on_attach,
 }

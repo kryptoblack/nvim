@@ -6,6 +6,8 @@ return {
     build = ':TSUpdate',
     config = function()
       local ts = require('nvim-treesitter')
+
+      -- These are Async calls
       ts.install(require('config.constants').parsers):wait(300000)
       ts.update()
 
@@ -20,7 +22,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    event = 'BufRead',
+    event = { 'BufRead', 'BufNewFile' },
     branch = 'main',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {
@@ -41,11 +43,8 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
-    event = 'BufRead',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      event = 'BufRead',
-    },
+    event = { 'BufRead', 'BufNewFile' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {
       multiwindow = true,
     },

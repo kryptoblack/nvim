@@ -21,5 +21,6 @@ end
 
 return {
   'sphamba/smear-cursor.nvim',
+  event = 'VeryLazy',
   config = on_attach,
 }

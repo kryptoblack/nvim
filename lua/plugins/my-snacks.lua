@@ -100,5 +100,6 @@ end
 
 return {
   'folke/snacks.nvim',
+  event = 'VeryLazy',
   config = on_attach,
 }

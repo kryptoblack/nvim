@@ -1,8 +1,8 @@
 return {
-  { 'williamboman/mason.nvim', opts = {} },
+  { 'williamboman/mason.nvim', event = 'VeryLazy', opts = {} },
   {
     'williamboman/mason-lspconfig.nvim',
-    event = { 'BufReadPre', 'BufNewFile' },
+    event = 'VeryLazy',
     dependencies = {
       'williamboman/mason.nvim',
       'neovim/nvim-lspconfig',

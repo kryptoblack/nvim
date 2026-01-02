@@ -45,15 +45,14 @@ vim.keymap.set('n', '<leader>f', function()
 end, { desc = 'Format buffer' })
 
 -- Luasnip
-local ls = require('luasnip')
 vim.keymap.set({ 'i', 's' }, '<C-j>', function()
-  if ls.jumpable(1) then
-    ls.jump(1)
+  if require('luasnip').jumpable(1) then
+    require('luasnip').jump(1)
   end
 end, { silent = true, desc = 'LuaSnip jump forward' })
 vim.keymap.set({ 'i', 's' }, '<C-k>', function()
-  if ls.jumpable(-1) then
-    ls.jump(-1)
+  if require('luasnip').jumpable(-1) then
+    require('luasnip').jump(-1)
   end
 end, { silent = true, desc = 'LuaSnip jump backward' })
 
@@ -67,31 +66,43 @@ end
 -- Buffer
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
 
-local snacks = require('snacks')
 vim.keymap.set('n', '<leader>sf', function()
-  snacks.picker.files({ hidden = true })
+  require('snacks').picker.files({ hidden = true })
 end, { desc = 'Find files' })
-vim.keymap.set('n', '<leader>sr', snacks.picker.recent, { desc = 'Recent files' })
-vim.keymap.set('n', '<leader>sg', snacks.picker.grep, { desc = 'Live grep' })
-vim.keymap.set('n', '<leader>ss', snacks.picker.lsp_symbols, { desc = 'LSP symbols' })
+vim.keymap.set('n', '<leader>sr', function()
+  require('snacks').picker.recent()
+end, { desc = 'Recent files' })
+vim.keymap.set('n', '<leader>sg', function()
+  require('snacks').picker.grep()
+end, { desc = 'Live grep' })
+vim.keymap.set('n', '<leader>ss', function()
+  require('snacks').picker.lsp_symbols()
+end, { desc = 'LSP symbols' })
 vim.keymap.set('n', '<leader>sd', function()
-  snacks.picker.diagnostics({ bufnr = 0 })
+  require('snacks').picker.diagnostics({ bufnr = 0 })
 end, { desc = 'Diagnostics (buffer)' })
-vim.keymap.set('n', '<leader>sD', snacks.picker.diagnostics, { desc = 'Diagnostics (workspace)' })
-vim.keymap.set('n', '<leader>sb', snacks.picker.buffers, { desc = 'Buffers' })
+vim.keymap.set('n', '<leader>sD', function()
+  require('snacks').picker.diagnostics()
+end, { desc = 'Diagnostics (workspace)' })
+vim.keymap.set('n', '<leader>sb', function()
+  require('snacks').picker.buffers()
+end, { desc = 'Buffers' })
 vim.keymap.set('n', '<leader>st', function()
-  snacks.picker.todo_comments()
+  require('snacks').picker.todo_comments()
 end, { desc = 'TODO picker' })
 
-local gs = require('gitsigns')
 vim.keymap.set('n', ']gh', function()
-  gs.nav_hunk('next')
+  require('gitsigns').nav_hunk('next')
 end, { desc = 'Next git hunk' })
 vim.keymap.set('n', '[gh', function()
-  gs.nav_hunk('prev')
+  require('gitsigns').nav_hunk('prev')
 end, { desc = 'Previous git hunk' })
-vim.keymap.set('n', '<leader>ghs', gs.stage_hunk, { desc = 'Stage hunk' })
-vim.keymap.set('n', '<leader>ghr', gs.reset_hunk, { desc = 'Reset hunk' })
+vim.keymap.set('n', '<leader>ghs', function()
+  require('gitsigns').stage_hunk()
+end, { desc = 'Stage hunk' })
+vim.keymap.set('n', '<leader>ghr', function()
+  require('gitsigns').reset_hunk()
+end, { desc = 'Reset hunk' })
 vim.keymap.set('n', '<leader>gr', function()
   local file = vim.fn.expand('%')
   vim.system({ 'git', 'restore', file }, {}, function(obj)
@@ -118,9 +129,15 @@ vim.keymap.set('n', '<leader>gu', function()
     end
   end)
 end, { desc = 'Unstage current file' })
-vim.keymap.set('n', '<leader>gB', gs.blame, { desc = 'Preview blame' })
-vim.keymap.set('n', '<leader>gb', gs.blame_line, { desc = 'Preview blame line' })
-vim.keymap.set('n', '<leader>gs', gs.stage_buffer, { desc = 'Stage entire buffer' })
+vim.keymap.set('n', '<leader>gB', function()
+  require('gitsigns').blame()
+end, { desc = 'Preview blame' })
+vim.keymap.set('n', '<leader>gb', function()
+  require('gitsigns').blame_line()
+end, { desc = 'Preview blame line' })
+vim.keymap.set('n', '<leader>gs', function()
+  require('gitsigns').stage_buffer()
+end, { desc = 'Stage entire buffer' })
 
 -- Explorer
 vim.keymap.set('n', '<leader>e', function()
@@ -165,17 +182,16 @@ end, { desc = 'Toggle [g]it [h]istory', noremap = true })
 -- Undotree
 vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<CR>', { desc = 'Undo tree' })
 
-local harpoon = require('harpoon')
 vim.keymap.set('n', '<leader>a', function()
-  harpoon:list():add()
+  require('harpoon'):list():add()
 end, { desc = 'List all harpoon marks' })
 vim.keymap.set('n', '<M-e>', function()
-  harpoon.ui:toggle_quick_menu(harpoon:list())
+  require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())
 end, { desc = 'Toggle quick menu' })
 
 for i, k in pairs({ 'a', 's', 'd', 'f', 'g' }) do
   vim.keymap.set('n', '<M-' .. k .. '>', function()
-    harpoon:list():select(i)
+    require('harpoon'):list():select(i)
   end, { desc = 'Go to mark (' .. i .. ')' })
 end
 
@@ -183,17 +199,18 @@ end
 -- <n>gt: go to tab at position n
 -- gt: go to next tab
 -- gT: go to prev tab
-local tasks = require('utils.tasks')
-vim.keymap.set('n', '<leader>tr', tasks.rename, { desc = 'Rename tab' })
-vim.keymap.set('n', '<leader>tn', tasks.pick, { desc = 'New project workspace' })
+vim.keymap.set('n', '<leader>tr', function()
+  require('utils.tasks').rename()
+end, { desc = 'Rename tab' })
+vim.keymap.set('n', '<leader>tn', function()
+  require('utils.tasks').pick()
+end, { desc = 'New project workspace' })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
 vim.keymap.set('n', '<leader>tcd', ':TaskCwd<CR>', { desc = 'Task change directory' })
 vim.keymap.set('n', '<leader>tca', ':tabonly<CR>', { desc = 'Close all tabs other than current' })
 vim.keymap.set('n', '<leader>tw', '<C-w>T', { desc = 'Move window to new tab' })
 
 -- textobjects (https://www.josean.com/posts/nvim-treesitter-and-textobjects)
-local tst_select = require('nvim-treesitter-textobjects.select')
-
 local select_maps = {
   ['a='] = '@assignment.outer',
   ['i='] = '@assignment.inner',
@@ -217,11 +234,10 @@ local select_maps = {
 
 for key, query in pairs(select_maps) do
   vim.keymap.set({ 'x', 'o' }, key, function()
-    tst_select.select_textobject(query, 'textobjects')
+    local select = require('nvim-treesitter-textobjects.select')
+    select.select_textobject(query, 'textobjects')
   end)
 end
-
-local tst_swap = require('nvim-treesitter-textobjects.swap')
 
 local swap_next = {
   ['<leader>na'] = '@parameter.inner',
@@ -234,53 +250,52 @@ local swap_prev = {
 
 for key, query in pairs(swap_next) do
   vim.keymap.set('n', key, function()
-    tst_swap.swap_next(query)
+    require('nvim-treesitter-textobjects.swap').swap_next(query)
   end)
 end
 for key, query in pairs(swap_prev) do
   vim.keymap.set('n', key, function()
-    tst_swap.swap_previous(query)
+    require('nvim-treesitter-textobjects.swap').swap_previous(query)
   end)
 end
 
-local tst_move = require('nvim-treesitter-textobjects.move')
-
 local move_configs = {
   -- Next Start
-  { key = ']k', query = '@call.outer', func = tst_move.goto_next_start },
-  { key = ']f', query = '@function.outer', func = tst_move.goto_next_start },
-  { key = ']c', query = '@class.outer', func = tst_move.goto_next_start },
-  { key = ']i', query = '@conditional.outer', func = tst_move.goto_next_start },
-  { key = ']l', query = '@loop.outer', func = tst_move.goto_next_start },
-  { key = ']s', query = '@scope', func = tst_move.goto_next_start, group = 'locals' },
-  { key = ']z', query = '@fold', func = tst_move.goto_next_start, group = 'folds' },
+  { key = ']k', query = '@call.outer', fn = 'goto_next_start' },
+  { key = ']f', query = '@function.outer', fn = 'goto_next_start' },
+  { key = ']c', query = '@class.outer', fn = 'goto_next_start' },
+  { key = ']i', query = '@conditional.outer', fn = 'goto_next_start' },
+  { key = ']l', query = '@loop.outer', fn = 'goto_next_start' },
+  { key = ']s', query = '@scope', fn = 'goto_next_start', group = 'locals' },
+  { key = ']z', query = '@fold', fn = 'goto_next_start', group = 'folds' },
 
   -- Next End
-  { key = ']K', query = '@call.outer', func = tst_move.goto_next_end },
-  { key = ']F', query = '@function.outer', func = tst_move.goto_next_end },
-  { key = ']C', query = '@class.outer', func = tst_move.goto_next_end },
-  { key = ']I', query = '@conditional.outer', func = tst_move.goto_next_end },
-  { key = ']L', query = '@loop.outer', func = tst_move.goto_next_end },
+  { key = ']K', query = '@call.outer', fn = 'goto_next_end' },
+  { key = ']F', query = '@function.outer', fn = 'goto_next_end' },
+  { key = ']C', query = '@class.outer', fn = 'goto_next_end' },
+  { key = ']I', query = '@conditional.outer', fn = 'goto_next_end' },
+  { key = ']L', query = '@loop.outer', fn = 'goto_next_end' },
 
   -- Previous Start
-  { key = '[k', query = '@call.outer', func = tst_move.goto_previous_start },
-  { key = '[f', query = '@function.outer', func = tst_move.goto_previous_start },
-  { key = '[c', query = '@class.outer', func = tst_move.goto_previous_start },
-  { key = '[i', query = '@conditional.outer', func = tst_move.goto_previous_start },
-  { key = '[l', query = '@loop.outer', func = tst_move.goto_previous_start },
+  { key = '[k', query = '@call.outer', fn = 'goto_previous_start' },
+  { key = '[f', query = '@function.outer', fn = 'goto_previous_start' },
+  { key = '[c', query = '@class.outer', fn = 'goto_previous_start' },
+  { key = '[i', query = '@conditional.outer', fn = 'goto_previous_start' },
+  { key = '[l', query = '@loop.outer', fn = 'goto_previous_start' },
 
   -- Previous End
-  { key = '[K', query = '@call.outer', func = tst_move.goto_previous_end },
-  { key = '[F', query = '@function.outer', func = tst_move.goto_previous_end },
-  { key = '[C', query = '@class.outer', func = tst_move.goto_previous_end },
-  { key = '[I', query = '@conditional.outer', func = tst_move.goto_previous_end },
-  { key = '[L', query = '@loop.outer', func = tst_move.goto_previous_end },
+  { key = '[K', query = '@call.outer', fn = 'goto_previous_end' },
+  { key = '[F', query = '@function.outer', fn = 'goto_previous_end' },
+  { key = '[C', query = '@class.outer', fn = 'goto_previous_end' },
+  { key = '[I', query = '@conditional.outer', fn = 'goto_previous_end' },
+  { key = '[L', query = '@loop.outer', fn = 'goto_previous_end' },
 }
 
 for _, m in ipairs(move_configs) do
   vim.keymap.set({ 'n', 'x', 'o' }, m.key, function()
+    local move = require('nvim-treesitter-textobjects.move')
     vim.cmd("normal! m'")
-    m.func(m.query, m.group or 'textobjects')
+    move[m.fn](m.query, m.group or 'textobjects')
     vim.cmd('normal! zz')
-  end, { desc = m.desc or m.query })
+  end, { desc = m.query })
 end

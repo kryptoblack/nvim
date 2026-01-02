@@ -55,10 +55,10 @@ require('lazy').setup({
   require('plugins.todo'),
 
   -- Surround
-  { 'kylechui/nvim-surround', event = 'VeryLazy', opts = {} },
+  { 'kylechui/nvim-surround', event = 'InsertEnter', opts = {} },
 
   -- Multiple cursors
-  'mg979/vim-visual-multi',
+  { 'mg979/vim-visual-multi', event = 'VeryLazy' },
 
   -- Picker
   require('plugins.my-snacks'),
@@ -74,7 +74,7 @@ require('lazy').setup({
   require('plugins.my-harpoon'),
 
   -- Notify & LSP progress
-  { 'j-hui/fidget.nvim', dependencies = { 'nvim-lspconfig' } },
+  { 'j-hui/fidget.nvim', event = 'VeryLazy', dependencies = { 'nvim-lspconfig' }, opts = {} },
 
   -- Smear cursor
   require('plugins.smear-cursor'),

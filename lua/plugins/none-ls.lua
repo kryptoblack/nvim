@@ -54,5 +54,6 @@ end
 
 return {
   'nvimtools/none-ls.nvim',
+  event = { 'BufReadPre', 'BufNewFile' },
   config = on_attach,
 }
