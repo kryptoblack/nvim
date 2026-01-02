@@ -49,4 +49,20 @@ return {
       multiwindow = true,
     },
   },
+  {
+    'MeanderingProgrammer/treesitter-modules.nvim',
+    event = { 'BufRead', 'BufNewFile' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = {
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<CR>',
+          node_incremental = '<CR>',
+          scope_incremental = '<Tab>',
+          node_decremental = '<BS>',
+        },
+      },
+    },
+  },
 }
