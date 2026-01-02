@@ -6,7 +6,7 @@ local function on_attach()
       icons_enabled = true,
       globalstatus = true,
       component_separators = '',
-      section_separators = '',
+      section_separators = { left = '', right = '' },
       disabled_filetypes = {
         'snacks_dashboard',
         'neo-tree',

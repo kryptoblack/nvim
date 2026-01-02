@@ -38,7 +38,9 @@ local function on_attach()
             icon = ' ',
             key = 'c',
             desc = 'Config',
-            action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+            action = function()
+              require('utils.tmux-sessionizer').open(vim.fn.stdpath('config'))
+            end,
           },
           {
             icon = ' ',
