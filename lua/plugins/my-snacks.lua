@@ -60,7 +60,7 @@ local function on_attach()
   snacks.setup({
     dashboard = {
       enabled = true,
-      pane_gap = 4,
+      -- pane_gap = 4,
       preset = {
         pick = nil,
         header = header,
@@ -71,7 +71,7 @@ local function on_attach()
         {
           pane = 1,
 
-          { section = 'header', padding = 1 },
+          { section = 'header', padding = { 0, 1 } },
 
           {
             icon = ' ',
