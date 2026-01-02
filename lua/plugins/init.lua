@@ -60,7 +60,7 @@ require('lazy').setup({
   -- Multiple cursors
   { 'mg979/vim-visual-multi', event = 'VeryLazy' },
 
-  -- Picker
+  -- Picker & more
   require('plugins.my-snacks'),
 
   -- Git
