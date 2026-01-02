@@ -199,12 +199,15 @@ end
 -- <n>gt: go to tab at position n
 -- gt: go to next tab
 -- gT: go to prev tab
-vim.keymap.set('n', '<leader>tr', function()
-  require('utils.tasks').rename()
-end, { desc = 'Rename tab' })
-vim.keymap.set('n', '<leader>tn', function()
-  require('utils.tasks').pick()
-end, { desc = 'New project workspace' })
+local function rename_tab()
+  vim.ui.input({ prompt = 'Tab name: ' }, function(name)
+    if name and name ~= '' then
+      vim.cmd('LualineRenameTab ' .. vim.fn.fnameescape(name))
+    end
+  end)
+end
+vim.keymap.set('n', '<leader>tr', rename_tab, { desc = 'Rename tab' })
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New tab' })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab' })
 vim.keymap.set('n', '<leader>tcd', ':TaskCwd<CR>', { desc = 'Task change directory' })
 vim.keymap.set('n', '<leader>tca', ':tabonly<CR>', { desc = 'Close all tabs other than current' })

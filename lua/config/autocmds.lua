@@ -52,26 +52,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Close loclist on select
--- This is done for lsp goto defination and references
--- vim.api.nvim_create_autocmd('FileType', {
---   pattern = 'qf',
---   callback = function()
---     vim.keymap.set('n', '<CR>', function()
---       vim.cmd('ll')
---       vim.cmd('lclose')
---     end, { buffer = true })
---   end,
--- })
-
--- Tabs
--- Autoapply cwd on tab switch
-vim.api.nvim_create_autocmd('TabEnter', {
-  callback = function()
-    require('utils.tasks').cwd.apply()
-  end,
-})
-
 -- Treesitter
 -- https://www.reddit.com/r/neovim/comments/1kuj9xm/comment/mv93w7h/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 vim.api.nvim_create_autocmd('FileType', {

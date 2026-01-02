@@ -2,6 +2,7 @@ local function on_attach()
   local lualine = require('lualine')
   lualine.setup({
     options = {
+      always_show_tabline = false,
       icons_enabled = true,
       globalstatus = true,
       component_separators = '',
@@ -68,10 +69,10 @@ local function on_attach()
     },
 
     tabline = {
-      lualine_b = {
+      lualine_a = {
         {
           'tabs',
-          -- mode = 1,
+          mode = 2,
           cond = function()
             return #vim.api.nvim_list_tabpages() > 1
           end,
@@ -80,7 +81,7 @@ local function on_attach()
             inactive = 'TabLine',
           },
           symbols = {
-            modified = '●',
+            modified = ' ●',
             alternate_file = '#',
             directory = '',
             readonly = '',
