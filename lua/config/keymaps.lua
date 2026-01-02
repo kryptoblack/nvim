@@ -317,3 +317,7 @@ vim.keymap.set('n', '<leader>qd', function()
 end, {
   desc = "stop Persistence => session won't be saved on exit",
 })
+
+-- Move chucks of code up/down
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv") -- Shift visual selected line down
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv") -- Shift visual selected line up

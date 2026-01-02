@@ -92,10 +92,10 @@ local function on_attach()
       },
     },
   })
+  snacks.dim.enable()
 end
 
 return {
   'folke/snacks.nvim',
-  event = 'VeryLazy',
   config = on_attach,
 }
