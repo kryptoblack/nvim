@@ -177,9 +177,7 @@ local function on_attach()
         preset = 'ivy',
       },
     },
-    dim = {},
   })
-  snacks.dim.enable()
 end
 
 return {
