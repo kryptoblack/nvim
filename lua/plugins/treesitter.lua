@@ -49,6 +49,13 @@ return {
       multiwindow = true,
     },
   },
+  -- TODO: Remove this and handle it via treesitter textobjects
+  {
+    'aaronik/treewalker.nvim',
+    event = { 'BufRead', 'BufNewFile' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = {},
+  },
   {
     'MeanderingProgrammer/treesitter-modules.nvim',
     event = { 'BufRead', 'BufNewFile' },
