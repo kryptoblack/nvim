@@ -47,6 +47,7 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {
       multiwindow = true,
+      max_lines = 4,
     },
   },
   -- TODO: Remove this and handle it via treesitter textobjects

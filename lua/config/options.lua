@@ -14,6 +14,7 @@ vim.opt.breakindent = true
 vim.opt.cmdheight = 0
 vim.opt.hidden = true
 vim.opt.confirm = false
+vim.opt.colorcolumn = '80'
 
 -- Timeout
 vim.opt.timeout = true
@@ -73,13 +74,8 @@ vim.g.VM_maps = {
 }
 
 -- Folding
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.opt.foldtext = "v:lua.require('utils.foldtext').foldtext()"
-vim.opt.foldenable = true
 vim.opt.foldlevel = 99 -- keep everything open
 vim.opt.foldlevelstart = 99 -- no folds on file open
-vim.opt.foldcolumn = '0' -- no extra gutter noise
 
 -- Tabs
 vim.opt.showtabline = 1

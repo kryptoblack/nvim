@@ -106,7 +106,7 @@ local function on_attach()
     picker = {
       enabled = true,
       layout = {
-        preset = 'ivy',
+        preset = 'sidebar',
       },
     },
   })

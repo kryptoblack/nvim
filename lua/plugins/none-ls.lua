@@ -1,11 +1,8 @@
-local has_biome = function(u)
-  return u.root_has_file({
-    'biome.json',
-    'biome.jsonc',
-  })
+local function has_biome(u)
+  return u.root_has_file({ 'biome.json', 'biome.jsonc' })
 end
 
-local has_prettier = function(u)
+local function has_prettier(u)
   return u.root_has_file({
     '.prettierrc',
     '.prettierrc.json',
@@ -30,16 +27,18 @@ local function on_attach()
 
       -- JS / TS
       null_ls.builtins.formatting.biome.with({
+        prefer_local = true,
         condition = function()
-          local u = utils.make_conditional_utils()
-          return has_biome(u)
+          local conditional_utils = utils.make_conditional_utils()
+          return has_biome(conditional_utils)
         end,
       }),
 
       null_ls.builtins.formatting.prettier.with({
+        prefer_local = true,
         condition = function()
-          local u = utils.make_conditional_utils()
-          return has_prettier(u) and not has_biome(u)
+          local conditional_utils = utils.make_conditional_utils()
+          return has_prettier(conditional_utils) and not has_biome(conditional_utils)
         end,
       }),
 

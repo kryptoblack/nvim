@@ -34,7 +34,7 @@ end, { desc = 'Go to previous diagnostic' })
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump({ count = 1 })
 end, { desc = 'Go to next diagnostic' })
-vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Diagnostics' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Diagnostics' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist)
 vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist)
 
@@ -76,12 +76,12 @@ end, { desc = 'Live grep' })
 vim.keymap.set('n', '<leader>fs', function()
   require('snacks').picker.lsp_symbols()
 end, { desc = 'LSP symbols' })
-vim.keymap.set('n', '<leader>fd', function()
-  require('snacks').picker.diagnostics({ bufnr = 0 })
-end, { desc = 'Diagnostics (buffer)' })
 vim.keymap.set('n', '<leader>fD', function()
+  require('snacks').picker.diagnostics_buffer()
+end, { desc = 'Diagnostics (current buffer)' })
+vim.keymap.set('n', '<leader>fd', function()
   require('snacks').picker.diagnostics()
-end, { desc = 'Diagnostics (workspace)' })
+end, { desc = 'Diagnostics' })
 vim.keymap.set('n', '<leader>fb', function()
   require('snacks').picker.buffers()
 end, { desc = 'Buffers' })
@@ -139,7 +139,7 @@ vim.keymap.set('n', '<leader>gs', function()
 end, { desc = 'Stage entire buffer' })
 
 -- Explorer
-vim.keymap.set('n', '<leader>e', function()
+vim.keymap.set('n', '<Bslash>', function()
   local ok, diffview = pcall(require, 'diffview.lib')
 
   if ok and diffview.get_current_view() then
@@ -309,10 +309,10 @@ vim.keymap.set({ 'n', 'v' }, '<C-j>', '<cmd>Treewalker Down<cr>', { silent = tru
 vim.keymap.set({ 'n', 'v' }, '<C-h>', '<cmd>Treewalker Left<cr>', { silent = true })
 
 -- swapping
--- vim.keymap.set('n', '<C-K>', '<cmd>Treewalker SwapUp<cr>', { silent = true })
--- vim.keymap.set('n', '<C-J>', '<cmd>Treewalker SwapDown<cr>', { silent = true })
--- vim.keymap.set('n', '<C-H>', '<cmd>Treewalker SwapLeft<cr>', { silent = true })
--- vim.keymap.set('n', '<C-L>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<M-k>', '<cmd>Treewalker SwapUp<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<M-j>', '<cmd>Treewalker SwapDown<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<M-h>', '<cmd>Treewalker SwapLeft<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<M-l>', '<cmd>Treewalker SwapRight<cr>', { silent = true })
 
 -- Sessions
 vim.keymap.set('n', '<leader>qs', function()
@@ -333,3 +333,20 @@ end, {
 -- Move chucks of code up/down
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv") -- Shift visual selected line down
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv") -- Shift visual selected line up
+
+-- Open all git files into buffer
+vim.keymap.set('n', '<leader>ga', function()
+  local cmd = 'git ls-files --others --modified --deleted --exclude-standard'
+  local files = vim.fn.systemlist(cmd)
+  if vim.v.shell_error ~= 0 or #files == 0 then
+    vim.notify('Not a git repository or no files found', vim.log.levels.WARN)
+    return
+  end
+
+  -- Set argument list
+  vim.fn.setqflist({}, ' ', { title = 'Git Files', items = {} })
+  vim.cmd('args ' .. table.concat(files, ' '))
+
+  -- Load all args into buffers
+  vim.cmd('argdo edit')
+end, { desc = 'Load all git-tracked files into buffers' })

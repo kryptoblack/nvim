@@ -93,4 +93,10 @@ require('lazy').setup({
 
   -- Sessions
   require('plugins.sessions'),
+
+  -- Folding
+  require('plugins.origami'),
+
+  -- abolish
+  { 'tpope/vim-abolish', event = 'VeryLazy' },
 }, opts)
