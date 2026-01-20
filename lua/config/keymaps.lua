@@ -138,18 +138,6 @@ vim.keymap.set('n', '<leader>gs', function()
   require('gitsigns').stage_buffer()
 end, { desc = 'Stage entire buffer' })
 
--- Explorer
-vim.keymap.set('n', '<Bslash>', function()
-  local ok, diffview = pcall(require, 'diffview.lib')
-
-  if ok and diffview.get_current_view() then
-    vim.cmd('DiffviewToggleFiles')
-    return
-  end
-
-  vim.cmd('Neotree toggle=true')
-end, { desc = '[E]xplorer (Diffview / NvimTree)' })
-
 -- Diffview
 
 ---Helper function to toggle diffview windows

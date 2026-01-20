@@ -82,9 +82,6 @@ require('lazy').setup({
   -- wakatime
   { 'wakatime/vim-wakatime', lazy = false },
 
-  -- Neotree
-  require('plugins.neotree'),
-
   -- Showkeys
   require('plugins.showkeys'),
 
