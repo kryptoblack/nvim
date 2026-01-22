@@ -338,3 +338,10 @@ vim.keymap.set('n', '<leader>ga', function()
   -- Load all args into buffers
   vim.cmd('argdo edit')
 end, { desc = 'Load all git-tracked files into buffers' })
+
+-- Print tree
+vim.keymap.set('n', '<C-t>', function()
+  vim.cmd('botright split | resize 20 | terminal tree --gitignore')
+end, {
+  desc = 'Show tree (respect .gitignore)',
+})
