@@ -96,4 +96,7 @@ require('lazy').setup({
 
   -- abolish
   { 'tpope/vim-abolish', event = 'VeryLazy' },
+
+  -- Flutter tools
+  require('plugins.flutter-tools'),
 }, opts)

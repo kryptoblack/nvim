@@ -1,20 +1,3 @@
-local lsp_on_attach = function(client, bufnr)
-  if client.name ~= 'null-ls' then
-    client.server_capabilities.documentFormatterProvider = false
-  end
-
-  local opts = { buffer = bufnr, silent = true }
-  vim.keymap.set('n', 'gd', function()
-    vim.lsp.buf.definition({ loclist = true })
-  end, opts)
-  vim.keymap.set('n', 'gr', function()
-    vim.lsp.buf.references({ includeDeclaration = false }, { loclist = true })
-  end, opts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-end
-
 local servers = {
   gopls = {},
   pyright = {},
@@ -55,7 +38,7 @@ local function on_attach()
     vim.lsp.config(
       server,
       vim.tbl_deep_extend('force', {
-        on_attach = lsp_on_attach,
+        on_attach = require('utils.lsp-on-attach'),
         capabilities = capabilities,
       }, config)
     )
