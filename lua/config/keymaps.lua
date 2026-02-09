@@ -345,3 +345,14 @@ vim.keymap.set('n', '<C-t>', function()
 end, {
   desc = 'Show tree (respect .gitignore)',
 })
+
+-- yank file path
+vim.keymap.set('n', '<leader>yp', function()
+  vim.fn.setreg('+', vim.fn.expand('%:p'))
+end, { desc = 'Yank full path' })
+
+-- gh copilot
+vim.keymap.set('i', '<C-L>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false,
+})

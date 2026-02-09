@@ -77,7 +77,7 @@ require('lazy').setup({
   { 'j-hui/fidget.nvim', event = 'VeryLazy', dependencies = { 'nvim-lspconfig' }, opts = {} },
 
   -- Smear cursor
-  require('plugins.smear-cursor'),
+  -- require('plugins.smear-cursor'),
 
   -- wakatime
   { 'wakatime/vim-wakatime', lazy = false },
@@ -99,4 +99,7 @@ require('lazy').setup({
 
   -- Flutter tools
   require('plugins.flutter-tools'),
+
+  -- GitHub copilot
+  { 'github/copilot.vim' },
 }, opts)

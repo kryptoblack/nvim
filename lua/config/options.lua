@@ -82,3 +82,6 @@ vim.opt.showtabline = 1
 vim.opt.switchbuf = 'useopen'
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+
+-- gh copilot
+vim.g.copilot_no_tab_map = true

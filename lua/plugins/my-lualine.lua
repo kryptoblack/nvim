@@ -40,6 +40,7 @@ local function on_attach()
         },
       },
       lualine_x = {
+        'selectioncount',
         {
           'diagnostics',
           sections = { 'error', 'warn', 'info', 'hint' },
