@@ -84,4 +84,5 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- gh copilot
+vim.g.copilot_enabled = false
 vim.g.copilot_no_tab_map = true
