@@ -28,6 +28,7 @@ local function on_attach()
       -- JS / TS
       null_ls.builtins.formatting.biome.with({
         prefer_local = true,
+        args = { 'check', '--write', '--stdin-file-path', '$FILENAME' },
         condition = function()
           local conditional_utils = utils.make_conditional_utils()
           return has_biome(conditional_utils)
