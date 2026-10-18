@@ -348,8 +348,11 @@ end, {
 
 -- yank file path
 vim.keymap.set('n', '<leader>yp', function()
+  vim.fn.setreg('+', vim.fn.expand('%'))
+end, { desc = 'Yank relative path' })
+vim.keymap.set('n', '<leader>yP', function()
   vim.fn.setreg('+', vim.fn.expand('%:p'))
-end, { desc = 'Yank full path' })
+end, { desc = 'Yank absolute path' })
 
 -- gh copilot
 vim.keymap.set('i', '<C-L>', 'copilot#Accept("\\<CR>")', {
